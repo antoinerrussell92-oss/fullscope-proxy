@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const { text } = await request.json();
+    const { text, system, max_tokens } = await request.json();
 
     if (!text || typeof text !== 'string') {
       return NextResponse.json({ error: 'No text provided' }, { status: 400 });
@@ -10,11 +10,26 @@ export async function POST(request: NextRequest) {
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
-      return NextResponse.json(
-        { error: 'API key not configured' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: 'API key not configured' }, { status: 500 });
     }
+
+    const systemPrompt = system || `You are FullScope's media analysis engine. Analyze news articles for bias, framing, and credibility. Respond ONLY with valid JSON, no markdown, no preamble.
+
+Return exactly:
+{
+  "title": "clean headline",
+  "summary": "2-3 sentence factual summary",
+  "bias_lean": "left|center|right|unclear",
+  "bias_score": 0-100,
+  "bias_explanation": "1-2 sentences",
+  "key_claims": ["claim 1", "claim 2", "claim 3"],
+  "left_perspective": "left framing in 1-2 sentences",
+  "center_perspective": "factual view in 1-2 sentences",
+  "right_perspective": "right framing in 1-2 sentences",
+  "whats_missing": "important context absent from coverage",
+  "global_coverage": ["angle 1", "angle 2", "angle 3"],
+  "verdict": "bottom line FullScope verdict in 1-2 sentences"
+}`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -25,65 +40,24 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: `You are FullScope's media analysis engine. Analyze news articles for bias, framing, and credibility.
-
-Always respond with ONLY a valid JSON object. No markdown, no explanation, no preamble.
-
-Return exactly this structure:
-{
-  "biasRating": {
-    "label": "Far Left | Left | Center-Left | Center | Center-Right | Right | Far Right",
-    "score": <number -100 to 100, negative=left, positive=right>,
-    "explanation": "<1-2 sentences>"
-  },
-  "framing": {
-    "label": "<4-6 word framing summary>",
-    "explanation": "<1-2 sentences describing how the story is framed>"
-  },
-  "emotionalLanguage": {
-    "level": "Low | Medium | High",
-    "examples": ["<word or phrase>", "<word or phrase>"],
-    "explanation": "<1 sentence>"
-  },
-  "missingContext": {
-    "items": ["<missing perspective or fact>", "<missing perspective or fact>", "<missing perspective or fact>"],
-    "explanation": "<1 sentence>"
-  },
-  "credibilityScore": {
-    "score": <number 0-100>,
-    "label": "Low | Moderate | High | Very High",
-    "explanation": "<1-2 sentences>"
-  },
-  "oneSentenceSummary": "<neutral, factual one-sentence summary of the article>"
-}`,
-        messages: [
-          {
-            role: 'user',
-            content: `Analyze this article:\n\n${text}`,
-          },
-        ],
+        max_tokens: max_tokens || 1200,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: text }],
       }),
     });
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
-      return NextResponse.json(
-        { error: error?.error?.message || 'Anthropic API error' },
-        { status: response.status }
-      );
+      return NextResponse.json({ error: error?.error?.message || 'Anthropic API error' }, { status: response.status });
     }
 
     const data = await response.json();
     const raw = data.content?.[0]?.text || '';
     const clean = raw.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(clean);
-
     return NextResponse.json(parsed);
+
   } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message || 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
   }
 }
