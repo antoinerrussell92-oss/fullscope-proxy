@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>FullScope News — See The Full Story</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700;1,800;1,900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --navy2: #0f1e38;
+  --navy3: #152247;
+  --navy4: #1c2d5a;
+  --gold: #c9a84c;
+  --gold2: #e2c06a;
+  --gold-dim: rgba(201,168,76,.14);
+  --gold-dim2: rgba(201,168,76,.07);
+  --white: #f0f4fc;
+  --text2: #8fa3c8;
+  --text3: #4a5f8a;
+  --left: #6b9fff;
+  --right: #f4845f;
+  --positive: #52d08a;
+  --purple: #a090ff;
+  --red: #f65b5b;
+  --amber: #ffc832;
+  --ff: 'Playfair Display', Georgia, serif;
+  --fb: 'Source Sans 3', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  background: #000;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  font-family: var(--fb);
+  touch-action: pan-y;
+}
+
+/* ── OUTER PHONE SHELL ── */
+.phone-shell {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(390px, 100vw);
+  height: min(844px, 100vh);
+  background: #000;
+  border-radius: min(44px, 6vw);
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 40px 120px rgba(0,0,0,0.8);
+}
+
+/* ── STATUS BAR ── */
+.status-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 300;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+  pointer-events: none;
+}
+.status-time { font-size: 13px; font-weight: 700; color: #fff; font-family: var(--ff); }
+.status-icons { font-size: 12px; color: #fff; }
+
+/* ── SCREENS ── */
+.screen {
+  position: absolute;
+  inset: 0;
+  bottom: 78px;
+  overflow-y: auto;
+  background: var(--navy);
+  display: none;
+}
+.screen.active { display: block; }
+.feed-screen {
+  overflow: hidden;
+  bottom: 78px;
+}
+
+/* ── TAB SWITCHER (feed only) ── */
+.tab-bar {
+  position: absolute;
+  top: 44px;
+  left: 0; right: 0;
+  height: 42px;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 18px 0;
+  gap: 20px;
+  z-index: 50;
+  background: linear-gradient(to bottom, rgba(10,22,40,0.85), transparent);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab-item {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--ff);
+  color: rgba(255,255,255,0.35);
+  cursor: pointer;
+  padding-bottom: 8px;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.tab-item.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ── FEED CONTAINER ── */
+.feed-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.cards-track {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+/* ── STORY CARD ── */
+.story-card {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.bg-economy {
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(201,168,76,0.25) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 80%, rgba(107,159,255,0.12) 0%, transparent 50%),
+    linear-gradient(160deg, #0a1628 0%, #152247 40%, #0d1b3e 100%);
+}
+.bg-immigration {
+  background:
+    radial-gradient(ellipse at 70% 25%, rgba(244,132,95,0.2) 0%, transparent 55%),
+    radial-gradient(ellipse at 20% 75%, rgba(107,159,255,0.15) 0%, transparent 50%),
+    linear-gradient(155deg, #0a1628 0%, #1c1a2e 50%, #0a1628 100%);
+}
+.bg-housing {
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(82,208,138,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 70%, rgba(201,168,76,0.1) 0%, transparent 45%),
+    linear-gradient(150deg, #0a1628 0%, #0f2020 50%, #0a1628 100%);
+}
+.bg-global {
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(160,144,255,0.2) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 20%, rgba(107,159,255,0.1) 0%, transparent 40%),
+    linear-gradient(170deg, #050b1a 0%, #0a0f28 50%, #050b1a 100%);
+}
+.bg-science {
+  background:
+    radial-gradient(ellipse at 60% 30%, rgba(82,208,138,0.2) 0%, transparent 55%),
+    radial-gradient(ellipse at 30% 70%, rgba(160,144,255,0.12) 0%, transparent 45%),
+    linear-gradient(145deg, #050f14 0%, #0a1f1a 50%, #050f14 100%);
+}
+.bg-positive {
+  background:
+    radial-gradient(ellipse at 40% 35%, rgba(82,208,138,0.28) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 65%, rgba(201,168,76,0.15) 0%, transparent 45%),
+    linear-gradient(155deg, #050f0a 0%, #081a10 50%, #050f0a 100%);
+}
+.bg-breaking {
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(246,91,91,0.22) 0%, transparent 55%),
+    radial-gradient(ellipse at 20% 70%, rgba(255,100,50,0.1) 0%, transparent 45%),
+    linear-gradient(150deg, #140506 0%, #200a0a 50%, #140506 100%);
+}
+.card-geo {
+  position: absolute;
+  top: 80px; right: -20px;
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  opacity: 0.06;
+  pointer-events: none;
+}
+.bg-economy .card-geo { background: radial-gradient(circle, var(--gold), transparent 70%); width: 300px; height: 300px; top: 60px; right: -60px; opacity: 0.12; }
+.bg-global .card-geo { background: radial-gradient(circle, #a090ff, transparent 70%); opacity: 0.15; }
+.bg-positive .card-geo { background: radial-gradient(circle, var(--positive), transparent 70%); opacity: 0.18; }
+.bg-breaking .card-geo { background: radial-gradient(circle, var(--red), transparent 70%); opacity: 0.18; }
+.bg-science .card-geo { background: radial-gradient(circle, var(--positive), transparent 70%); opacity: 0.14; }
+.card-grid-overlay {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+.card-top-meta {
+  position: absolute;
+  top: 106px; left: 18px; right: 18px;
+  display: flex; align-items: center; gap: 8px;
+  z-index: 20;
+}
+.card-category-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 4px 12px; border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+.badge-economy { background: rgba(201,168,76,0.2); color: var(--gold); border: 0.5px solid rgba(201,168,76,0.35); }
+.badge-immigration { background: rgba(244,132,95,0.18); color: var(--right); border: 0.5px solid rgba(244,132,95,0.3); }
+.badge-housing { background: rgba(82,208,138,0.15); color: var(--positive); border: 0.5px solid rgba(82,208,138,0.3); }
+.badge-global { background: rgba(160,144,255,0.18); color: #a090ff; border: 0.5px solid rgba(160,144,255,0.3); }
+.badge-science { background: rgba(82,208,138,0.15); color: var(--positive); border: 0.5px solid rgba(82,208,138,0.25); }
+.badge-positive { background: rgba(82,208,138,0.2); color: var(--positive); border: 0.5px solid rgba(82,208,138,0.35); }
+.badge-breaking { background: rgba(246,91,91,0.2); color: var(--red); border: 0.5px solid rgba(246,91,91,0.35); animation: breakingPulse 1.5s infinite; }
+@keyframes breakingPulse { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+.card-time { font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 600; }
+.card-source-count {
+  margin-left: auto; font-size: 10px; color: rgba(255,255,255,0.35);
+  font-weight: 600; background: rgba(255,255,255,0.07);
+  padding: 3px 10px; border-radius: 20px;
+}
+.card-headline-area {
+  position: absolute; top: 150px; left: 18px; right: 18px; z-index: 20;
+}
+.card-headline {
+  font-family: var(--ff); font-size: 30px; font-weight: 900; font-style: italic;
+  color: #fff; line-height: 1.15; letter-spacing: -0.5px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+.card-headline em { color: var(--gold); font-style: italic; }
+.card-deck {
+  margin-top: 12px; font-size: 13px; color: rgba(240,244,252,0.65);
+  line-height: 1.6; font-weight: 300; max-width: 320px;
+}
+.card-shelf {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 18px 18px 100px;
+  background: linear-gradient(to top, rgba(8,14,32,0.96) 0%, rgba(8,14,32,0.85) 70%, rgba(8,14,32,0.0) 100%);
+  z-index: 20;
+}
+.shelf-spectrum-label {
+  display: flex; justify-content: space-between;
+  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 7px;
+}
+.shelf-spectrum-bar {
+  height: 5px; border-radius: 3px; overflow: hidden;
+  display: flex; gap: 2px; margin-bottom: 14px;
+}
+.shelf-spectrum-bar div { border-radius: 2px; }
+.shelf-sources { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.source-chip { padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.3px; }
+.source-chip.l { background: rgba(107,159,255,0.15); color: var(--left); }
+.source-chip.c { background: rgba(201,168,76,0.15); color: var(--gold); }
+.source-chip.r { background: rgba(244,132,95,0.15); color: var(--right); }
+.source-chip.more { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.35); }
+.shelf-consensus {
+  font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.55;
+  margin-bottom: 14px; padding-left: 10px; border-left: 2px solid var(--gold);
+}
+.shelf-consensus strong { color: rgba(255,255,255,0.85); font-weight: 600; }
+.shelf-actions { display: flex; gap: 8px; }
+.shelf-btn-primary {
+  flex: 1; padding: 13px; border-radius: 10px;
+  background: var(--gold); color: #0a1628;
+  font-family: var(--ff); font-size: 13px; font-weight: 800;
+  border: none; cursor: pointer; transition: all 0.15s; text-align: center;
+}
+.shelf-btn-primary:active { transform: scale(0.97); background: var(--gold2); }
+.shelf-btn-secondary {
+  padding: 13px 16px; border-radius: 10px;
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6);
+  font-family: var(--ff); font-size: 13px; font-weight: 700;
+  border: 0.5px solid rgba(255,255,255,0.12); cursor: pointer;
+  white-space: nowrap; transition: all 0.15s;
+}
+
+/* ── SWIPE DOTS ── */
+.swipe-dots {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 5px; z-index: 50;
+}
+.swipe-dot { width: 3px; border-radius: 2px; background: rgba(255,255,255,0.2); transition: all 0.3s; }
+.swipe-dot.active { background: var(--gold); box-shadow: 0 0 6px rgba(201,168,76,0.5); }
+
+/* ── SWIPE HINT ── */
+.swipe-hint {
+  position: absolute; bottom: 90px; right: 18px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  opacity: 0; animation: hintFade 3s ease 1.5s forwards; z-index: 60;
+}
+@keyframes hintFade {
+  0% { opacity: 0; transform: translateY(10px); }
+  30% { opacity: 1; transform: translateY(0); }
+  70% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+.swipe-hint-arrow { font-size: 20px; animation: arrowBounce 1.2s infinite; color: rgba(255,255,255,0.5); }
+@keyframes arrowBounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
+.swipe-hint-text { font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 78px;
+  background: rgba(8,14,32,0.97);
+  backdrop-filter: blur(20px);
+  border-top: 0.5px solid rgba(201,168,76,0.15);
+  display: flex; align-items: flex-start; padding-top: 10px;
+  z-index: 200;
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; gap: 3px; cursor: pointer;
+}
+.nav-icon { font-size: 20px; line-height: 1; }
+.nav-label { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; color: rgba(255,255,255,0.3); }
+.nav-item.active .nav-label { color: var(--gold); }
+.nav-active-bar {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 28px; height: 2px; background: var(--gold);
+  border-radius: 0 0 2px 2px; transition: all 0.3s;
+}
+
+/* ── DETAIL OVERLAY ── */
+.detail-overlay {
+  position: absolute; inset: 0; background: var(--navy);
+  z-index: 200; transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+  overflow-y: auto;
+}
+.detail-overlay.open { transform: translateY(0); }
+.detail-close-bar {
+  position: sticky; top: 0;
+  background: rgba(10,22,40,0.96); backdrop-filter: blur(20px);
+  padding: 14px 18px; display: flex; align-items: center; gap: 14px;
+  border-bottom: 0.5px solid rgba(201,168,76,0.15); z-index: 10;
+}
+.close-btn {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.12);
+  color: #fff; font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.detail-logo { font-family: var(--ff); font-size: 15px; font-weight: 800; font-style: italic; color: #fff; }
+.detail-logo span { color: var(--gold); }
+.detail-body { padding: 20px 18px 100px; }
+.detail-eyebrow { font-size: 10px; color: var(--gold); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 10px; }
+.detail-title { font-family: var(--ff); font-size: 24px; font-weight: 900; font-style: italic; color: #fff; line-height: 1.2; margin-bottom: 18px; }
+.detail-spectrum-bar { height: 7px; border-radius: 4px; overflow: hidden; display: flex; gap: 2px; margin-bottom: 18px; }
+.detail-spectrum-bar div { border-radius: 2px; }
+.consensus-block {
+  background: rgba(201,168,76,0.08); border: 0.5px solid rgba(201,168,76,0.22);
+  border-radius: 10px; padding: 14px; margin-bottom: 14px;
+}
+.consensus-label { font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--gold); margin-bottom: 7px; }
+.consensus-text { font-size: 13px; color: #fff; line-height: 1.7; }
+.persp-block { border-radius: 10px; padding: 13px; margin-bottom: 10px; border: 0.5px solid; }
+.persp-block.left { background: rgba(107,159,255,0.08); border-color: rgba(107,159,255,0.2); }
+.persp-block.center { background: rgba(201,168,76,0.07); border-color: rgba(201,168,76,0.18); }
+.persp-block.right { background: rgba(244,132,95,0.08); border-color: rgba(244,132,95,0.2); }
+.persp-label { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 6px; }
+.persp-block.left .persp-label { color: var(--left); }
+.persp-block.center .persp-label { color: var(--gold); }
+.persp-block.right .persp-label { color: var(--right); }
+.persp-text { font-size: 13px; color: rgba(240,244,252,0.85); line-height: 1.65; }
+.missing-block { border-radius: 10px; padding: 13px; margin-bottom: 10px; background: rgba(255,200,50,0.07); border: 0.5px solid rgba(255,200,50,0.2); }
+.missing-label { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+.missing-text { font-size: 13px; color: rgba(240,244,252,0.85); line-height: 1.65; }
+.global-block { border-radius: 10px; padding: 13px; background: rgba(160,144,255,0.07); border: 0.5px solid rgba(160,144,255,0.18); }
+.global-label { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #a090ff; margin-bottom: 10px; }
+.global-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+.global-pill { padding: 4px 11px; border-radius: 20px; font-size: 11px; background: rgba(255,255,255,0.06); border: 0.5px solid rgba(255,255,255,0.1); color: rgba(240,244,252,0.6); }
+
+/* Stars */
+.stars-overlay { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.star { position: absolute; background: #fff; border-radius: 50%; animation: twinkle var(--dur, 3s) infinite var(--delay, 0s); }
+@keyframes twinkle { 0%,100%{opacity:var(--op,0.4);} 50%{opacity:0.1;} }
+
+/* ── ANALYZE SCREEN ── */
+.analyze-screen-inner {
+  padding: 60px 18px 24px;
+}
+.analyze-screen-logo {
+  font-family: var(--ff); font-size: 18px; font-weight: 900; font-style: italic;
+  color: #fff; margin-bottom: 4px;
+}
+.analyze-screen-logo span { color: var(--gold); }
+.analyze-screen-title {
+  font-family: var(--ff); font-size: 26px; font-weight: 800; font-style: italic;
+  color: #fff; margin-bottom: 6px; line-height: 1.2;
+}
+.analyze-screen-sub {
+  font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 22px;
+}
+.analyze-mode-tabs {
+  display: flex; gap: 8px; margin-bottom: 20px;
+}
+.analyze-mode-tab {
+  flex: 1; padding: 9px 6px; border-radius: 8px;
+  background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.1);
+  font-size: 11px; font-weight: 700; color: var(--text2);
+  cursor: pointer; text-align: center; transition: all 0.2s;
+}
+.analyze-mode-tab.active {
+  background: var(--gold-dim); border-color: rgba(201,168,76,0.3); color: var(--gold);
+}
+.analyze-input-wrap {
+  background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1);
+  border-radius: 12px; margin-bottom: 12px; overflow: hidden;
+}
+.analyze-input-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+  color: var(--text3); padding: 12px 14px 0;
+}
+.analyze-textarea {
+  width: 100%; background: transparent; border: none; outline: none;
+  color: var(--white); font-family: var(--fb); font-size: 14px; line-height: 1.6;
+  padding: 8px 14px 14px; resize: none; min-height: 100px;
+}
+.analyze-textarea::placeholder { color: var(--text3); }
+.analyze-btn {
+  width: 100%; padding: 15px; border-radius: 12px;
+  background: var(--gold); color: #0a1628;
+  font-family: var(--ff); font-size: 15px; font-weight: 800;
+  border: none; cursor: pointer; transition: all 0.15s; margin-bottom: 20px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.analyze-btn:active { transform: scale(0.98); }
+.analyze-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.analyze-loading {
+  display: none; text-align: center; padding: 32px 0;
+}
+.analyze-loading.show { display: block; }
+.analyze-spinner {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2.5px solid rgba(201,168,76,0.2); border-top-color: var(--gold);
+  animation: spin 0.8s linear infinite; margin: 0 auto 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.analyze-loading-text { font-size: 13px; color: var(--text2); }
+
+/* ── ANALYSIS RESULT ── */
+.result-wrap { display: none; }
+.result-wrap.show { display: block; }
+.result-section {
+  border-radius: 12px; padding: 14px; margin-bottom: 12px;
+  border: 0.5px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03);
+}
+.result-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.3px;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.result-label.gold { color: var(--gold); }
+.result-label.blue { color: var(--left); }
+.result-label.amber { color: var(--amber); }
+.result-label.purple { color: var(--purple); }
+.result-label.green { color: var(--positive); }
+.result-label.red { color: var(--red); }
+.result-text { font-size: 13px; color: var(--white); line-height: 1.7; }
+.result-sub { font-size: 12px; color: var(--text2); line-height: 1.6; margin-top: 5px; }
+.bias-meter-wrap { margin: 10px 0 8px; }
+.bias-meter-track {
+  height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px;
+  position: relative; overflow: visible;
+}
+.bias-meter-fill { height: 6px; background: var(--gold); border-radius: 3px; }
+.bias-meter-thumb {
+  position: absolute; top: -5px; width: 16px; height: 16px;
+  background: var(--gold); border-radius: 50%; margin-left: -8px;
+  border: 2px solid var(--navy); box-shadow: 0 0 8px rgba(201,168,76,0.5);
+}
+.bias-meter-labels {
+  display: flex; justify-content: space-between; margin-top: 7px;
+  font-size: 9px; color: var(--text3); font-weight: 700; letter-spacing: 0.5px;
+}
+.result-perspectives { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.result-persp { border-radius: 8px; padding: 10px 12px; border: 0.5px solid; }
+.result-persp.left { background: rgba(107,159,255,0.06); border-color: rgba(107,159,255,0.18); }
+.result-persp.center { background: rgba(201,168,76,0.06); border-color: rgba(201,168,76,0.15); }
+.result-persp.right { background: rgba(244,132,95,0.06); border-color: rgba(244,132,95,0.18); }
+.result-persp-label { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 5px; }
+.result-persp.left .result-persp-label { color: var(--left); }
+.result-persp.center .result-persp-label { color: var(--gold); }
+.result-persp.right .result-persp-label { color: var(--right); }
+.result-persp-text { font-size: 12px; color: rgba(240,244,252,0.8); line-height: 1.6; }
+.result-claims { list-style: none; margin-top: 6px; display: flex; flex-direction: column; gap: 6px; }
+.result-claims li {
+  font-size: 12px; color: var(--text2); line-height: 1.6;
+  padding-left: 14px; position: relative;
+}
+.result-claims li::before {
+  content: '·'; position: absolute; left: 0; color: var(--gold); font-size: 18px; top: -3px;
+}
+.result-verdict {
+  background: var(--gold-dim); border: 0.5px solid rgba(201,168,76,0.25);
+  border-radius: 12px; padding: 16px; margin-bottom: 12px;
+}
+.result-verdict-label { font-size: 9px; font-weight: 700; letter-spacing: 1.3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.result-verdict-text { font-family: var(--ff); font-size: 15px; font-style: italic; color: #fff; line-height: 1.5; }
+.result-global-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.result-global-pill { padding: 4px 10px; border-radius: 20px; font-size: 11px; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.1); color: var(--text2); }
+.analyze-reset-btn {
+  width: 100%; padding: 13px; border-radius: 10px;
+  background: rgba(255,255,255,0.06); border: 0.5px solid rgba(255,255,255,0.1);
+  color: var(--text2); font-family: var(--fb); font-size: 13px; font-weight: 600;
+  cursor: pointer; margin-bottom: 24px; transition: all 0.15s;
+}
+.error-block {
+  display: none; border-radius: 12px; padding: 14px;
+  background: rgba(246,91,91,0.08); border: 0.5px solid rgba(246,91,91,0.2);
+  margin-bottom: 16px;
+}
+.error-block.show { display: block; }
+.error-block-text { font-size: 13px; color: var(--red); line-height: 1.6; }
+
+/* ── PROFILE SCREEN ── */
+.profile-inner { padding: 60px 18px 40px; }
+.profile-avatar-wrap { display: flex; flex-direction: column; align-items: center; margin-bottom: 28px; }
+.profile-avatar {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--gold-dim); border: 1.5px solid rgba(201,168,76,0.35);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; margin-bottom: 12px;
+}
+.profile-name { font-family: var(--ff); font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+.profile-plan { font-size: 11px; font-weight: 700; color: var(--gold); letter-spacing: 0.8px; text-transform: uppercase; }
+.profile-stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px;
+}
+.profile-stat {
+  background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 14px; text-align: center;
+}
+.profile-stat-num { font-family: var(--ff); font-size: 28px; font-weight: 800; color: var(--gold); }
+.profile-stat-label { font-size: 10px; color: var(--text2); margin-top: 3px; font-weight: 600; }
+.profile-section-title {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.3px; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 12px;
+}
+.bias-audit-bars { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+.bias-bar-row { display: flex; flex-direction: column; gap: 5px; }
+.bias-bar-label { display: flex; justify-content: space-between; }
+.bias-bar-name { font-size: 12px; color: var(--text2); font-weight: 600; }
+.bias-bar-pct { font-size: 12px; color: var(--text3); font-weight: 600; }
+.bias-bar-track { height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+.bias-bar-fill { height: 5px; border-radius: 3px; transition: width 0.8s ease; }
+.profile-actions { display: flex; flex-direction: column; gap: 10px; }
+.profile-btn-gold {
+  width: 100%; padding: 14px; border-radius: 10px; background: var(--gold); color: #0a1628;
+  font-family: var(--ff); font-size: 14px; font-weight: 800; border: none; cursor: pointer;
+}
+.profile-btn-muted {
+  width: 100%; padding: 13px; border-radius: 10px;
+  background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.1);
+  color: var(--text2); font-family: var(--fb); font-size: 13px; font-weight: 600; cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<div class="phone-shell" id="phone">
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <span class="status-time" id="status-time">9:41</span>
+    <span class="status-icons">●●● 📶 🔋</span>
+  </div>
+
+  <!-- ══ FEED SCREEN ══ -->
+  <div class="screen feed-screen active" id="screen-feed">
+
+    <!-- Tab bar -->
+    <div class="tab-bar">
+      <div class="tab-item active" onclick="setFeedTab(this,'all')">For You</div>
+      <div class="tab-item" onclick="setFeedTab(this,'global')">🌍 Global</div>
+      <div class="tab-item" onclick="setFeedTab(this,'science')">🔬 Science</div>
+      <div class="tab-item" onclick="setFeedTab(this,'business')">📈 Business</div>
+      <div class="tab-item" onclick="setFeedTab(this,'positive')">✨ Good News</div>
+    </div>
+
+    <!-- Feed -->
+    <div class="feed-container" id="feed-container">
+      <div class="cards-track" id="cards-track"></div>
+    </div>
+
+    <!-- Swipe dots -->
+    <div class="swipe-dots" id="swipe-dots"></div>
+
+    <!-- Swipe hint -->
+    <div class="swipe-hint" id="swipe-hint">
+      <div class="swipe-hint-arrow">↑</div>
+      <div class="swipe-hint-text">Swipe</div>
+    </div>
+
+  </div><!-- /feed screen -->
+
+  <!-- ══ ANALYZE SCREEN ══ -->
+  <div class="screen" id="screen-analyze" style="overflow-y:auto;">
+    <div class="analyze-screen-inner">
+
+      <div class="analyze-screen-logo">Full<span>Scope</span></div>
+      <div class="analyze-screen-title">Analyzer</div>
+      <div class="analyze-screen-sub">Paste any article, URL, or video link to get a full bias, framing, and credibility breakdown.</div>
+
+      <!-- Mode tabs -->
+      <div class="analyze-mode-tabs">
+        <div class="analyze-mode-tab active" onclick="setAnalyzeMode('article',this)">📰 Article</div>
+        <div class="analyze-mode-tab" onclick="setAnalyzeMode('video',this)">▶ Video</div>
+        <div class="analyze-mode-tab" onclick="setAnalyzeMode('claim',this)">⚡ Claim</div>
+      </div>
+
+      <!-- Input -->
+      <div class="analyze-input-wrap">
+        <div class="analyze-input-label" id="analyze-input-label">PASTE ARTICLE TEXT OR URL</div>
+        <textarea class="analyze-textarea" id="analyze-textarea" placeholder="Paste article text, URL, or claim here…" rows="5"></textarea>
+      </div>
+
+      <!-- Button -->
+      <button class="analyze-btn" id="analyze-btn" onclick="runAnalysis()">
+        <span>🔍</span> <span id="analyze-btn-text">Analyze Article</span>
+      </button>
+
+      <!-- Error -->
+      <div class="error-block" id="analyze-error">
+        <div class="error-block-text" id="analyze-error-text"></div>
+      </div>
+
+      <!-- Loading -->
+      <div class="analyze-loading" id="analyze-loading">
+        <div class="analyze-spinner"></div>
+        <div class="analyze-loading-text">Claude is analyzing…</div>
+      </div>
+
+      <!-- Result -->
+      <div class="result-wrap" id="result-wrap">
+
+        <div class="result-section" id="result-summary-section">
+          <div class="result-label gold">Summary</div>
+          <div class="result-text" id="result-summary"></div>
+        </div>
+
+        <div class="result-section">
+          <div class="result-label gold">Bias Rating</div>
+          <div class="result-text" id="result-bias-label"></div>
+          <div class="bias-meter-wrap">
+            <div class="bias-meter-track">
+              <div class="bias-meter-fill" id="bias-meter-fill"></div>
+              <div class="bias-meter-thumb" id="bias-meter-thumb"></div>
+            </div>
+            <div class="bias-meter-labels"><span>Left</span><span>Center</span><span>Right</span></div>
+          </div>
+          <div class="result-sub" id="result-bias-explanation"></div>
+        </div>
+
+        <div class="result-section">
+          <div class="result-label blue">Key Claims</div>
+          <ul class="result-claims" id="result-claims"></ul>
+        </div>
+
+        <div class="result-section">
+          <div class="result-label gold">All Perspectives</div>
+          <div class="result-perspectives">
+            <div class="result-persp left">
+              <div class="result-persp-label">Left-leaning view</div>
+              <div class="result-persp-text" id="result-left"></div>
+            </div>
+            <div class="result-persp center">
+              <div class="result-persp-label">Center / Factual</div>
+              <div class="result-persp-text" id="result-center"></div>
+            </div>
+            <div class="result-persp right">
+              <div class="result-persp-label">Right-leaning view</div>
+              <div class="result-persp-text" id="result-right"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-section">
+          <div class="result-label amber">What's Missing</div>
+          <div class="result-text" id="result-missing"></div>
+        </div>
+
+        <div class="result-section">
+          <div class="result-label purple">Global Coverage</div>
+          <div class="result-global-pills" id="result-global"></div>
+        </div>
+
+        <div class="result-verdict">
+          <div class="result-verdict-label">FullScope Verdict</div>
+          <div class="result-verdict-text" id="result-verdict"></div>
+        </div>
+
+        <button class="analyze-reset-btn" onclick="resetAnalysis()">← Analyze another</button>
+
+      </div><!-- /result-wrap -->
+
+      <!-- Claim result (separate) -->
+      <div class="result-wrap" id="claim-result-wrap">
+        <div class="result-section" id="claim-result-section">
+          <div class="result-label" id="claim-verdict-label">Verdict</div>
+          <div class="result-text" id="claim-verdict-headline" style="font-family:var(--ff);font-size:18px;font-weight:800;font-style:italic;margin-bottom:8px;"></div>
+          <div class="result-sub" id="claim-verdict-explanation"></div>
+          <div class="result-sub" style="margin-top:8px;" id="claim-verdict-nuance"></div>
+        </div>
+        <button class="analyze-reset-btn" onclick="resetAnalysis()">← Check another claim</button>
+      </div>
+
+    </div>
+  </div><!-- /analyze screen -->
+
+  <!-- ══ PROFILE SCREEN ══ -->
+  <div class="screen" id="screen-profile" style="overflow-y:auto;">
+    <div class="profile-inner">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar">👤</div>
+        <div class="profile-name">FullScope Member</div>
+        <div class="profile-plan">Free Plan</div>
+      </div>
+
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <div class="profile-stat-num" id="profile-used">0</div>
+          <div class="profile-stat-label">Analyses This Month</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-num">5</div>
+          <div class="profile-stat-label">Monthly Limit</div>
+        </div>
+      </div>
+
+      <div class="profile-section-title">Personal Bias Audit</div>
+      <div class="bias-audit-bars" id="bias-audit-bars">
+        <div class="bias-bar-row">
+          <div class="bias-bar-label">
+            <span class="bias-bar-name">Left-leaning</span>
+            <span class="bias-bar-pct" id="bias-pct-left">0%</span>
+          </div>
+          <div class="bias-bar-track"><div class="bias-bar-fill" id="bias-fill-left" style="width:0%;background:var(--left);"></div></div>
+        </div>
+        <div class="bias-bar-row">
+          <div class="bias-bar-label">
+            <span class="bias-bar-name">Center</span>
+            <span class="bias-bar-pct" id="bias-pct-center">0%</span>
+          </div>
+          <div class="bias-bar-track"><div class="bias-bar-fill" id="bias-fill-center" style="width:0%;background:var(--gold);"></div></div>
+        </div>
+        <div class="bias-bar-row">
+          <div class="bias-bar-label">
+            <span class="bias-bar-name">Right-leaning</span>
+            <span class="bias-bar-pct" id="bias-pct-right">0%</span>
+          </div>
+          <div class="bias-bar-track"><div class="bias-bar-fill" id="bias-fill-right" style="width:0%;background:var(--right);"></div></div>
+        </div>
+        <div class="bias-bar-row">
+          <div class="bias-bar-label">
+            <span class="bias-bar-name">Global / Intl</span>
+            <span class="bias-bar-pct" id="bias-pct-global">0%</span>
+          </div>
+          <div class="bias-bar-track"><div class="bias-bar-fill" id="bias-fill-global" style="width:0%;background:var(--purple);"></div></div>
+        </div>
+      </div>
+
+      <div class="profile-actions">
+        <button class="profile-btn-gold">Upgrade to Plus ✦</button>
+        <button class="profile-btn-muted" onclick="showScreen('analyze')">Go to Analyzer →</button>
+        <button class="profile-btn-muted" onclick="showScreen('feed')">Back to Feed →</button>
+      </div>
+    </div>
+  </div><!-- /profile screen -->
+
+  <!-- ══ BOTTOM NAV ══ -->
+  <div class="bottom-nav">
+    <div class="nav-item active" id="nav-feed" onclick="showScreen('feed')">
+      <div style="position:relative;">
+        <div class="nav-active-bar" id="nav-bar-feed"></div>
+      </div>
+      <div class="nav-icon">📰</div>
+      <div class="nav-label">Feed</div>
+    </div>
+    <div class="nav-item" id="nav-analyze" onclick="showScreen('analyze')">
+      <div style="position:relative;">
+        <div class="nav-active-bar" id="nav-bar-analyze" style="display:none;"></div>
+      </div>
+      <div class="nav-icon">🔍</div>
+      <div class="nav-label">Analyze</div>
+    </div>
+    <div class="nav-item" id="nav-claims" onclick="showScreen('analyze');setAnalyzeMode('claim',document.querySelectorAll('.analyze-mode-tab')[2])">
+      <div style="position:relative;">
+        <div class="nav-active-bar" id="nav-bar-claims" style="display:none;"></div>
+      </div>
+      <div class="nav-icon">⚡</div>
+      <div class="nav-label">Claims</div>
+    </div>
+    <div class="nav-item" id="nav-profile" onclick="showScreen('profile');loadBiasAudit()">
+      <div style="position:relative;">
+        <div class="nav-active-bar" id="nav-bar-profile" style="display:none;"></div>
+      </div>
+      <div class="nav-icon">👤</div>
+      <div class="nav-label">Profile</div>
+    </div>
+  </div>
+
+  <!-- ══ STORY DETAIL OVERLAY ══ -->
+  <div class="detail-overlay" id="detail-overlay">
+    <div class="detail-close-bar">
+      <div class="close-btn" onclick="closeDetail()">←</div>
+      <div class="detail-logo">Full<span>Scope</span></div>
+    </div>
+    <div class="detail-body" id="detail-body"></div>
+  </div>
+
+</div><!-- /phone-shell -->
+
+<script>
+// ── PROXY CONFIG ──
+const PROXY_URL = 'https://fullscope-proxy.vercel.app/api/analyze';
+const FREE_LIMIT = 5;
+
+// ── STORY DATA ──
+const allStories = {
+  all: [
+    {
+      id:1, bg:'bg-economy', category:'Economy', badge:'badge-economy', badgeLabel:'Economy',
+      time:'2 hrs ago', sources:12,
+      headline:'Inflation drops for <em>third straight month</em> — what it means for your wallet',
+      deck:'The Consumer Price Index fell again in March. Energy down. Groceries flat. But the story is more complicated than the headline.',
+      spectrum:{l:35,c:40,r:25},
+      chips:{l:['NPR','NYT'],c:['Reuters','AP'],r:['Fox Biz','WSJ']},
+      consensus:'CPI fell 0.1% — the third consecutive monthly decline. Energy prices dropped 2.3%. Economists across the spectrum agree the data is accurate.',
+      perspectives:{
+        left:{text:'The decline signals progressive spending policy is bearing fruit, but working-class households haven\'t felt real relief yet. More investment needed.'},
+        center:{text:'A genuine easing trend, though core services inflation remains sticky at 3.8%. Markets pricing in two rate cuts by year-end.'},
+        right:{text:'Three months doesn\'t undo three years of 20%+ cumulative inflation. Real wages are still negative for bottom earners.'}
+      },
+      missing:'Coverage ignores regional variation — rural inflation remains 1.2 points higher than urban. Small business loan impact is absent from almost all reporting.',
+      global:['UK still at 4.1%','ECB holding rates','Japan in mild deflation','Brazil at 5.2%']
+    },
+    {
+      id:2, bg:'bg-immigration', category:'Immigration', badge:'badge-immigration', badgeLabel:'Contested',
+      time:'5 hrs ago', sources:9,
+      headline:'Border crossings hit <em>3-year low</em> — enforcement win or policy trap?',
+      deck:'CBP numbers are undeniable. But the story behind them depends entirely on who\'s telling it.',
+      spectrum:{l:28,c:35,r:37},
+      chips:{l:['MSNBC'],c:['AP','PBS'],r:['Fox','NY Post']},
+      consensus:'CBP confirmed 62,000 encounters in March — lowest since early 2021. Both physical enforcement and asylum policy changes contributed.',
+      perspectives:{
+        left:{text:'Lower numbers come partly from restricting legal pathways, pushing migrants into dangerous informal routes. Deaths at the border are up 18%.'},
+        center:{text:'A combination of policy, seasonal patterns, and a slowdown in Central American displacement. Context matters for interpreting the data.'},
+        right:{text:'The reduction vindicates stricter enforcement. Proof that strong border security works when applied consistently.'}
+      },
+      missing:'Almost no coverage mentions economic conditions driving migration — drought, gang displacement, and currency collapse in Honduras and Ecuador.',
+      global:['EU Mediterranean crossings up 22%','Australia changed offshore processing','Colombia hosting 2.9M Venezuelan migrants']
+    },
+    {
+      id:3, bg:'bg-global', category:'Global', badge:'badge-global', badgeLabel:'Underreported',
+      time:'1 day ago', sources:6,
+      headline:'Sudan: <em>8 million displaced.</em> This is the first time you\'re hearing about it.',
+      deck:'One of the worst humanitarian crises on earth. Almost zero US coverage. Here\'s why — and what\'s actually happening.',
+      spectrum:{l:42,c:45,r:13},
+      chips:{l:[],c:['BBC','Al Jazeera','Reuters'],r:[]},
+      consensus:'The conflict between Sudan\'s Armed Forces and the RSF paramilitary has created one of the world\'s largest displacement crises, now entering its second year.',
+      perspectives:{
+        left:{text:'Human rights groups call it genocide. The arms pipeline from Gulf states to RSF is largely ignored by Western governments with economic interests.'},
+        center:{text:'A complex power struggle between two military factions that ousted civilian government in 2021. Humanitarian situation is catastrophic by any measure.'},
+        right:{text:'Western inaction reflects a broader failure of foreign policy. Calls for humanitarian corridors have gone unanswered by the international community.'}
+      },
+      missing:'The role of Russian Wagner forces supporting RSF is almost never covered. Gold mining revenue financing the conflict is entirely absent from US reporting.',
+      global:['UN estimates 25M need aid','Egypt and Ethiopia mediating','Chad overwhelmed with refugee camps']
+    }
+  ],
+  global: [
+    {
+      id:3, bg:'bg-global', category:'Global', badge:'badge-global', badgeLabel:'Underreported',
+      time:'1 day ago', sources:6,
+      headline:'Sudan: <em>8 million displaced.</em> This is the first time you\'re hearing about it.',
+      deck:'One of the worst humanitarian crises on earth. Almost zero US coverage.',
+      spectrum:{l:42,c:45,r:13},
+      chips:{l:[],c:['BBC','Al Jazeera','Reuters'],r:[]},
+      consensus:'The conflict between Sudan\'s Armed Forces and the RSF paramilitary has created one of the world\'s largest displacement crises.',
+      perspectives:{
+        left:{text:'Human rights groups call it genocide. The arms pipeline from Gulf states to RSF is largely ignored by Western governments with economic interests.'},
+        center:{text:'A complex power struggle between two military factions that ousted civilian government in 2021. Humanitarian situation is catastrophic by any measure.'},
+        right:{text:'Western inaction reflects a broader failure of foreign policy. Calls for humanitarian corridors have gone unanswered.'}
+      },
+      missing:'The role of Russian Wagner forces supporting RSF is almost never covered.',
+      global:['UN estimates 25M need aid','Egypt and Ethiopia mediating','Chad overwhelmed with refugee camps']
+    }
+  ],
+  science: [
+    {
+      id:4, bg:'bg-science', category:'Science & Tech', badge:'badge-science', badgeLabel:'Breakthrough',
+      time:'6 hrs ago', sources:8,
+      headline:'New battery charges in <em>5 minutes,</em> lasts 20 years. The science is real.',
+      deck:'Stanford researchers published results that would change EVs completely. The question is whether it survives the gap between lab and production.',
+      spectrum:{l:30,c:55,r:15},
+      chips:{l:[],c:['Nature','MIT Tech Review','Reuters'],r:[]},
+      consensus:'Sodium-ion battery with 98% capacity retention after 10,000 cycles and 80% charge in under 5 minutes — confirmed in lab conditions at Stanford.',
+      perspectives:{
+        left:{text:'Could democratize EV access — sodium is 500x more abundant than lithium and doesn\'t rely on Congo mining. Environmental and equity implications are significant.'},
+        center:{text:'Lab results are promising but commercialization is realistically 5–8 years away. Lithium-ion continues to improve too.'},
+        right:{text:'Private sector investment, not government mandates, is driving battery innovation. Proof that markets solve energy problems when left to compete.'}
+      },
+      missing:'No coverage addresses what happens to hundreds of millions of existing lithium batteries when sodium tech arrives — a massive recycling challenge.',
+      global:['China leading sodium-ion production','EU funding solid-state research','Japan\'s Toyota betting on solid-state instead']
+    }
+  ],
+  business: [
+    {
+      id:6, bg:'bg-economy', category:'Business', badge:'badge-economy', badgeLabel:'Business',
+      time:'3 hrs ago', sources:7,
+      headline:'Small business closures hit <em>8-year high</em> — the numbers nobody wants to say out loud.',
+      deck:'Chamber of Commerce data shows 1 in 5 small businesses closed or reduced operations in Q1. The headline economy looks different from the ground.',
+      spectrum:{l:40,c:38,r:22},
+      chips:{l:['HuffPost'],c:['WSJ','Bloomberg'],r:['Fox Biz']},
+      consensus:'Small business applications rose but closures also rose simultaneously — a bifurcation economists describe as a K-shaped recovery at the micro level.',
+      perspectives:{
+        left:{text:'Commercial rent increases and private equity consolidation are squeezing out independent operators. Policy needs to address rent and credit access.'},
+        center:{text:'A complex mix of post-pandemic normalization, higher borrowing costs, and sector-specific disruption. No single cause dominates.'},
+        right:{text:'Regulatory burden and minimum wage increases made small margins impossible to sustain. Less government intervention would help more than targeted relief.'}
+      },
+      missing:'Almost no coverage mentions the commercial real estate crisis as a direct driver — landlords raising rents to cover their own debt exposure.',
+      global:['UK SME failures at decade high','Canada seeing similar pattern','Germany\'s Mittelstand under pressure']
+    }
+  ],
+  positive: [
+    {
+      id:5, bg:'bg-positive', category:'Good News', badge:'badge-positive', badgeLabel:'Good News',
+      time:'1 day ago', sources:5,
+      headline:'Child mortality hits <em>lowest point in history.</em> This should be front page.',
+      deck:'Malaria deaths down 90% since 2000. Under-5 mortality at 37 per 1,000 globally. One of the greatest achievements in human history — almost no coverage.',
+      spectrum:{l:30,c:60,r:10},
+      chips:{l:[],c:['Lancet','WHO','Reuters'],r:[]},
+      consensus:'UNICEF and WHO confirm global under-5 mortality fell from 93 per 1,000 births in 1990 to 37 in 2024. Malaria deaths dropped from 900K/yr to under 90K.',
+      perspectives:{
+        left:{text:'Global health investment, vaccine distribution, and foreign aid are the primary drivers — proof that coordinated aid works when delivered effectively.'},
+        center:{text:'Decades of consistent global health infrastructure, bed nets, vaccines, and improved nutrition produced one of history\'s greatest humanitarian achievements.'},
+        right:{text:'Economic development and trade — which lifted billions out of poverty — enabled better healthcare access. Market growth, not aid alone, drove this.'}
+      },
+      missing:'Virtually absent from daily news. Good trend continuing is not seen as newsworthy — structural bias toward negativity in media.',
+      global:['Africa achieved biggest gains','Bangladesh reduced mortality faster than rich nations','India\'s turnaround is particularly dramatic']
+    }
+  ]
+};
+
+let currentFeedTab = 'all';
+let currentIndex = 0;
+let startY = 0, currentY = 0, isDragging = false;
+
+// ── SCREEN NAVIGATION ──
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.nav-active-bar').forEach(b => b.style.display = 'none');
+  document.getElementById('screen-' + name).classList.add('active');
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) {
+    navEl.classList.add('active');
+    const bar = document.getElementById('nav-bar-' + name);
+    if (bar) bar.style.display = 'block';
+  }
+}
+
+// ── FEED TAB ──
+function setFeedTab(el, tab) {
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentFeedTab = tab;
+  currentIndex = 0;
+  renderCards();
+}
+
+// ── CARD HEIGHT ──
+function getCardHeight() {
+  const phone = document.getElementById('phone');
+  return phone ? phone.getBoundingClientRect().height : Math.min(844, window.innerHeight);
+}
+
+// ── BUILD STARS ──
+function buildStars(container) {
+  const overlay = document.createElement('div');
+  overlay.className = 'stars-overlay';
+  for (let i = 0; i < 60; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 2 + 0.5;
+    star.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*60}%;--op:${(Math.random()*0.4+0.1).toFixed(2)};--dur:${(Math.random()*3+2).toFixed(1)}s;--delay:${(Math.random()*4).toFixed(1)}s;`;
+    overlay.appendChild(star);
+  }
+  container.appendChild(overlay);
+}
+
+// ── BUILD CARD ──
+function buildCard(story, ch) {
+  const card = document.createElement('div');
+  card.className = `story-card ${story.bg}`;
+  card.style.height = ch + 'px';
+
+  const geo = document.createElement('div');
+  geo.className = 'card-geo';
+  card.appendChild(geo);
+
+  const grid = document.createElement('div');
+  grid.className = 'card-grid-overlay';
+  card.appendChild(grid);
+
+  if (story.bg === 'bg-global') buildStars(card);
+
+  const meta = document.createElement('div');
+  meta.className = 'card-top-meta';
+  meta.innerHTML = `<span class="card-category-badge ${story.badge}">${story.badgeLabel}</span><span class="card-time">${story.time}</span><span class="card-source-count">${story.sources} sources</span>`;
+  card.appendChild(meta);
+
+  const hl = document.createElement('div');
+  hl.className = 'card-headline-area';
+  hl.innerHTML = `<div class="card-headline">${story.headline}</div><div class="card-deck">${story.deck}</div>`;
+  card.appendChild(hl);
+
+  const stories_list = allStories[currentFeedTab] || allStories.all;
+  const lchips = story.chips.l.map(s=>`<span class="source-chip l">${s}</span>`).join('');
+  const cchips = story.chips.c.map(s=>`<span class="source-chip c">${s}</span>`).join('');
+  const rchips = story.chips.r.map(s=>`<span class="source-chip r">${s}</span>`).join('');
+  const totalChips = story.chips.l.length + story.chips.c.length + story.chips.r.length;
+  const moreCount = story.sources - totalChips;
+  const moreChip = moreCount > 0 ? `<span class="source-chip more">+${moreCount} more</span>` : '';
+
+  const shelf = document.createElement('div');
+  shelf.className = 'card-shelf';
+  shelf.innerHTML = `
+    <div class="shelf-spectrum-label"><span>◀ Left</span><span>Coverage spectrum</span><span>Right ▶</span></div>
+    <div class="shelf-spectrum-bar">
+      <div style="width:${story.spectrum.l}%;background:var(--left);"></div>
+      <div style="width:${story.spectrum.c}%;background:var(--gold);"></div>
+      <div style="width:${story.spectrum.r}%;background:var(--right);"></div>
+    </div>
+    <div class="shelf-sources">${lchips}${cchips}${rchips}${moreChip}</div>
+    <div class="shelf-consensus"><strong>Everyone agrees:</strong> ${story.consensus.slice(0,90)}${story.consensus.length>90?'...':''}</div>
+    <div class="shelf-actions">
+      <button class="shelf-btn-primary" onclick="openDetail(${story.id})">See Full Breakdown →</button>
+      <button class="shelf-btn-secondary" onclick="showScreen('analyze');setAnalyzeMode('claim',document.querySelectorAll('.analyze-mode-tab')[2])">⚡ Claim Check</button>
+    </div>
+  `;
+  card.appendChild(shelf);
+  return card;
+}
+
+// ── RENDER CARDS ──
+function renderCards() {
+  const track = document.getElementById('cards-track');
+  const ch = getCardHeight();
+  const stories_list = allStories[currentFeedTab] || allStories.all;
+  track.innerHTML = '';
+  stories_list.forEach((s, i) => {
+    const card = buildCard(s, ch);
+    card.style.position = 'absolute';
+    card.style.top = (i * ch) + 'px';
+    track.appendChild(card);
+  });
+  track.style.height = (stories_list.length * ch) + 'px';
+  currentIndex = 0;
+  updateTrack(false);
+  buildDots();
+}
+
+function updateTrack(animate = true) {
+  const track = document.getElementById('cards-track');
+  const ch = getCardHeight();
+  if (!animate) track.style.transition = 'none';
+  track.style.transform = `translateY(${-currentIndex * ch}px)`;
+  if (!animate) requestAnimationFrame(() => { track.style.transition = ''; });
+  updateDots();
+}
+
+function buildDots() {
+  const dots = document.getElementById('swipe-dots');
+  const stories_list = allStories[currentFeedTab] || allStories.all;
+  dots.innerHTML = '';
+  stories_list.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'swipe-dot';
+    dot.style.height = i === currentIndex ? '20px' : '6px';
+    dot.classList.toggle('active', i === currentIndex);
+    dots.appendChild(dot);
+  });
+}
+
+function updateDots() {
+  document.querySelectorAll('.swipe-dot').forEach((d, i) => {
+    const active = i === currentIndex;
+    d.classList.toggle('active', active);
+    d.style.height = active ? '20px' : '6px';
+  });
+}
+
+function goToCard(idx) {
+  const stories_list = allStories[currentFeedTab] || allStories.all;
+  currentIndex = Math.max(0, Math.min(idx, stories_list.length - 1));
+  updateTrack(true);
+}
+
+// ── SWIPE ──
+const feedEl = document.getElementById('feed-container');
+feedEl.addEventListener('touchstart', e => {
+  startY = e.touches[0].clientY; isDragging = true;
+  document.getElementById('cards-track').style.transition = 'none';
+}, {passive:true});
+feedEl.addEventListener('touchmove', e => {
+  if (!isDragging) return;
+  currentY = e.touches[0].clientY;
+  const diff = startY - currentY;
+  const ch = getCardHeight();
+  document.getElementById('cards-track').style.transform = `translateY(${-(currentIndex * ch) - diff * 0.6}px)`;
+}, {passive:true});
+feedEl.addEventListener('touchend', () => {
+  if (!isDragging) return;
+  isDragging = false;
+  document.getElementById('cards-track').style.transition = '';
+  const diff = startY - currentY;
+  if (diff > 60) goToCard(currentIndex + 1);
+  else if (diff < -60) goToCard(currentIndex - 1);
+  else goToCard(currentIndex);
+});
+let mouseDown = false;
+feedEl.addEventListener('mousedown', e => { mouseDown = true; startY = e.clientY; document.getElementById('cards-track').style.transition = 'none'; });
+window.addEventListener('mousemove', e => {
+  if (!mouseDown) return;
+  currentY = e.clientY;
+  const diff = startY - currentY;
+  const ch = getCardHeight();
+  document.getElementById('cards-track').style.transform = `translateY(${-(currentIndex * ch) - diff * 0.5}px)`;
+});
+window.addEventListener('mouseup', () => {
+  if (!mouseDown) return;
+  mouseDown = false;
+  document.getElementById('cards-track').style.transition = '';
+  const diff = startY - currentY;
+  if (diff > 60) goToCard(currentIndex + 1);
+  else if (diff < -60) goToCard(currentIndex - 1);
+  else goToCard(currentIndex);
+});
+window.addEventListener('keydown', e => {
+  if (document.getElementById('screen-feed').classList.contains('active')) {
+    if (e.key === 'ArrowDown') goToCard(currentIndex + 1);
+    if (e.key === 'ArrowUp') goToCard(currentIndex - 1);
+  }
+});
+
+// ── DETAIL OVERLAY ──
+function openDetail(id) {
+  const stories_list = allStories[currentFeedTab] || allStories.all;
+  const story = stories_list.find(s => s.id === id);
+  if (!story) return;
+  const body = document.getElementById('detail-body');
+  body.innerHTML = `
+    <div class="detail-eyebrow">${story.category}</div>
+    <div class="detail-title">${story.headline.replace(/<\/?em>/g,'')}</div>
+    <div class="detail-spectrum-bar" style="margin-bottom:18px;">
+      <div style="width:${story.spectrum.l}%;background:var(--left);"></div>
+      <div style="width:${story.spectrum.c}%;background:var(--gold);"></div>
+      <div style="width:${story.spectrum.r}%;background:var(--right);"></div>
+    </div>
+    <div class="consensus-block">
+      <div class="consensus-label">✓ What everyone agrees on</div>
+      <div class="consensus-text">${story.consensus}</div>
+    </div>
+    <div class="persp-block left">
+      <div class="persp-label">Left-leaning view</div>
+      <div class="persp-text">${story.perspectives.left.text}</div>
+    </div>
+    <div class="persp-block center">
+      <div class="persp-label">Center / Factual</div>
+      <div class="persp-text">${story.perspectives.center.text}</div>
+    </div>
+    <div class="persp-block right">
+      <div class="persp-label">Right-leaning view</div>
+      <div class="persp-text">${story.perspectives.right.text}</div>
+    </div>
+    <div class="missing-block">
+      <div class="missing-label">⚠ What's missing from coverage</div>
+      <div class="missing-text">${story.missing}</div>
+    </div>
+    <div class="global-block">
+      <div class="global-label">🌍 How the world is covering this</div>
+      <div class="global-pills">${story.global.map(g=>`<span class="global-pill">${g}</span>`).join('')}</div>
+    </div>
+  `;
+  document.getElementById('detail-overlay').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detail-overlay').classList.remove('open');
+}
+
+// ── ANALYZE MODE ──
+let currentMode = 'article';
+function setAnalyzeMode(mode, el) {
+  currentMode = mode;
+  document.querySelectorAll('.analyze-mode-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const labelMap = { article: 'PASTE ARTICLE TEXT OR URL', video: 'PASTE VIDEO URL', claim: 'TYPE OR PASTE A CLAIM TO FACT-CHECK' };
+  const btnMap = { article: 'Analyze Article', video: 'Analyze Video', claim: 'Fact-Check This Claim' };
+  const placeholderMap = { article: 'Paste article text or URL here…', video: 'Paste YouTube, TikTok, or other video URL…', claim: 'Type any claim to fact-check…' };
+  document.getElementById('analyze-input-label').textContent = labelMap[mode];
+  document.getElementById('analyze-btn-text').textContent = btnMap[mode];
+  document.getElementById('analyze-textarea').placeholder = placeholderMap[mode];
+  resetAnalysis();
+}
+
+// ── USAGE TRACKING ──
+function getUsage() {
+  try {
+    const key = `${new Date().getFullYear()}-${new Date().getMonth()}`;
+    const stored = JSON.parse(localStorage.getItem('fs_usage') || '{}');
+    if (stored.month !== key) return { count: 0, month: key };
+    return stored;
+  } catch(e) { return { count: 0, month: '' }; }
+}
+function incrementUsage() {
+  try {
+    const u = getUsage();
+    u.count++;
+    localStorage.setItem('fs_usage', JSON.stringify(u));
+  } catch(e) {}
+}
+function trackBias(lean) {
+  try {
+    const d = JSON.parse(localStorage.getItem('fs_bias_history') || '{"left":0,"center":0,"right":0,"global":0,"total":0}');
+    if (lean === 'left') d.left++;
+    else if (lean === 'right') d.right++;
+    else if (lean === 'global') d.global++;
+    else d.center++;
+    d.total++;
+    localStorage.setItem('fs_bias_history', JSON.stringify(d));
+  } catch(e) {}
+}
+
+// ── RUN ANALYSIS ──
+async function runAnalysis() {
+  const text = document.getElementById('analyze-textarea').value.trim();
+  if (!text) return;
+
+  const usage = getUsage();
+  if (usage.count >= FREE_LIMIT) {
+    showError('You\'ve used all 5 free analyses this month. Upgrade to Plus for 50 analyses/month.');
+    return;
+  }
+
+  document.getElementById('analyze-btn').disabled = true;
+  document.getElementById('analyze-loading').classList.add('show');
+  document.getElementById('analyze-error').classList.remove('show');
+  document.getElementById('result-wrap').classList.remove('show');
+  document.getElementById('claim-result-wrap').classList.remove('show');
+
+  try {
+    let systemPrompt, maxTokens;
+
+    if (currentMode === 'claim') {
+      systemPrompt = `You are FullScope's fact-checking engine. Analyze any claim and respond ONLY with valid JSON, no markdown, no preamble.
+
+Return exactly:
+{
+  "verdict": "true|false|misleading|missing_context",
+  "headline": "max 8 words",
+  "explanation": "2-3 sentences plain language",
+  "sources": ["source 1", "source 2"],
+  "nuance": "one sentence on complexity"
+}`;
+      maxTokens = 400;
+    } else {
+      systemPrompt = `You are FullScope's media analysis engine. Analyze news articles and videos. Respond ONLY with valid JSON, no markdown, no preamble.
+
+Return exactly:
+{
+  "title": "clean headline",
+  "summary": "2-3 sentence factual summary",
+  "bias_lean": "left|center|right|unclear",
+  "bias_score": 0-100,
+  "bias_explanation": "1-2 sentences",
+  "key_claims": ["claim 1", "claim 2", "claim 3"],
+  "left_perspective": "left framing in 1-2 sentences",
+  "center_perspective": "factual view in 1-2 sentences",
+  "right_perspective": "right framing in 1-2 sentences",
+  "whats_missing": "important context absent from coverage",
+  "global_coverage": ["angle 1", "angle 2", "angle 3"],
+  "verdict": "bottom line FullScope verdict in 1-2 sentences"
+}`;
+      maxTokens = 1200;
+    }
+
+    const response = await fetch(PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: (currentMode === 'claim' ? 'Fact-check this claim: ' : 'Analyze this content: ') + text,
+        system: systemPrompt,
+        max_tokens: maxTokens
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err?.error || `Request failed (${response.status})`);
+    }
+
+    const r = await response.json();
+    incrementUsage();
+
+    if (currentMode === 'claim') {
+      renderClaimResult(r);
+    } else {
+      renderAnalysisResult(r);
+      trackBias(r.bias_lean);
+    }
+
+  } catch(e) {
+    showError(e.message || 'Analysis failed. Please try again.');
+  } finally {
+    document.getElementById('analyze-btn').disabled = false;
+    document.getElementById('analyze-loading').classList.remove('show');
+  }
+}
+
+function showError(msg) {
+  document.getElementById('analyze-error-text').textContent = msg;
+  document.getElementById('analyze-error').classList.add('show');
+}
+
+function renderAnalysisResult(r) {
+  document.getElementById('result-summary').textContent = r.summary || '';
+  document.getElementById('result-bias-label').textContent = r.bias_lean ? r.bias_lean.charAt(0).toUpperCase() + r.bias_lean.slice(1) : '';
+  document.getElementById('result-bias-explanation').textContent = r.bias_explanation || '';
+
+  const score = r.bias_score || 50;
+  const pct = score + '%';
+  document.getElementById('bias-meter-fill').style.width = pct;
+  document.getElementById('bias-meter-thumb').style.left = pct;
+
+  const claimsEl = document.getElementById('result-claims');
+  claimsEl.innerHTML = '';
+  (r.key_claims || []).forEach(c => {
+    const li = document.createElement('li');
+    li.textContent = c;
+    claimsEl.appendChild(li);
+  });
+
+  document.getElementById('result-left').textContent = r.left_perspective || '';
+  document.getElementById('result-center').textContent = r.center_perspective || '';
+  document.getElementById('result-right').textContent = r.right_perspective || '';
+  document.getElementById('result-missing').textContent = r.whats_missing || '';
+
+  const globalEl = document.getElementById('result-global');
+  globalEl.innerHTML = (r.global_coverage || []).map(g => `<span class="result-global-pill">${g}</span>`).join('');
+
+  document.getElementById('result-verdict').textContent = r.verdict || '';
+
+  document.getElementById('result-wrap').classList.add('show');
+  document.getElementById('screen-analyze').scrollTop = 0;
+}
+
+function renderClaimResult(r) {
+  const colorMap = { true: 'green', false: 'red', misleading: 'amber', missing_context: 'purple' };
+  const emojiMap = { true: '✓ VERIFIED TRUE', false: '✗ FALSE', misleading: '⚠ MISLEADING', missing_context: '◎ MISSING CONTEXT' };
+  const color = colorMap[r.verdict] || 'gold';
+  const label = emojiMap[r.verdict] || r.verdict;
+
+  document.getElementById('claim-verdict-label').className = `result-label ${color}`;
+  document.getElementById('claim-verdict-label').textContent = label;
+  document.getElementById('claim-verdict-headline').textContent = r.headline || '';
+  document.getElementById('claim-verdict-explanation').textContent = r.explanation || '';
+  document.getElementById('claim-verdict-nuance').textContent = r.nuance ? `Note: ${r.nuance}` : '';
+
+  document.getElementById('claim-result-wrap').classList.add('show');
+  document.getElementById('screen-analyze').scrollTop = 0;
+}
+
+function resetAnalysis() {
+  document.getElementById('analyze-textarea').value = '';
+  document.getElementById('result-wrap').classList.remove('show');
+  document.getElementById('claim-result-wrap').classList.remove('show');
+  document.getElementById('analyze-error').classList.remove('show');
+  document.getElementById('analyze-loading').classList.remove('show');
+  document.getElementById('analyze-btn').disabled = false;
+}
+
+// ── PROFILE / BIAS AUDIT ──
+function loadBiasAudit() {
+  try {
+    const u = getUsage();
+    document.getElementById('profile-used').textContent = u.count;
+    const d = JSON.parse(localStorage.getItem('fs_bias_history') || '{"left":0,"center":0,"right":0,"global":0,"total":0}');
+    const total = d.total || 1;
+    const pcts = {
+      left: Math.round((d.left/total)*100),
+      center: Math.round((d.center/total)*100),
+      right: Math.round((d.right/total)*100),
+      global: Math.round((d.global/total)*100)
+    };
+    setTimeout(() => {
+      ['left','center','right','global'].forEach(k => {
+        document.getElementById(`bias-fill-${k}`).style.width = pcts[k] + '%';
+        document.getElementById(`bias-pct-${k}`).textContent = pcts[k] + '%';
+      });
+    }, 100);
+  } catch(e) {}
+}
+
+// ── STATUS TIME ──
+function updateTime() {
+  const now = new Date();
+  let h = now.getHours(), m = now.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  document.getElementById('status-time').textContent = `${h}:${m.toString().padStart(2,'0')} ${ampm}`;
+}
+updateTime();
+setInterval(updateTime, 60000);
+
+// ── INIT ──
+setTimeout(() => {
+  renderCards();
+}, 50);
+</script>
+</body>
+</html>
