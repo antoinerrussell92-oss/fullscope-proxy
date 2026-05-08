@@ -450,10 +450,11 @@ html, body { background: #000; overflow: hidden; height: 100%; width: 100%; font
 </div>
 
 <script>
-const PROXY_URL = 'https://fullscope-proxy.vercel.app/api/analyze';
-const AUTH_URL  = 'https://fullscope-proxy.vercel.app/api/auth';
-const NEWS_URL  = 'https://fullscope-proxy.vercel.app/api/news';
-const FREE_LIMIT = 5;
+const PROXY_URL    = 'https://fullscope-proxy.vercel.app/api/analyze';
+const AUTH_URL     = 'https://fullscope-proxy.vercel.app/api/auth';
+const NEWS_URL     = 'https://fullscope-proxy.vercel.app/api/news';
+const ARTICLE_URL  = 'https://fullscope-proxy.vercel.app/api/fetch-article';
+const FREE_LIMIT   = 5;
 
 let authSession = null;
 let authMode = 'login';
@@ -624,18 +625,45 @@ function renderLiveCards() {
   buildDots();
 }
 
-function openArticleDetail(index) {
+async function openArticleDetail(index) {
   const a = liveArticles[index];
   if (!a) return;
+
+  // Show overlay immediately with loading spinner
+  document.getElementById('detail-body').innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:center;padding:60px 0;flex-direction:column;gap:12px;">
+      <div style="width:36px;height:36px;border-radius:50%;border:2.5px solid rgba(201,168,76,0.2);border-top-color:var(--gold);animation:spin 0.8s linear infinite;"></div>
+      <div style="font-size:13px;color:var(--text2);font-family:var(--ff);font-style:italic;">Fetching full article…</div>
+    </div>
+  `;
+  document.getElementById('detail-overlay').classList.add('open');
+
+  let content = a.description || '';
+  let image = a.urlToImage || '';
+
+  try {
+    const res = await fetch(ARTICLE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: a.url })
+    });
+    const data = await res.json();
+    if (res.ok && data.content) {
+      content = data.content;
+      if (data.image) image = data.image;
+    }
+  } catch(e) {
+    // Fall back to description silently
+  }
+
   document.getElementById('detail-body').innerHTML = `
     <div style="font-size:10px;color:var(--gold);font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;">${a.source?.name || 'News'} · ${formatTimeAgo(a.publishedAt)}</div>
     <div style="font-family:var(--ff);font-size:22px;font-weight:900;font-style:italic;color:#fff;line-height:1.25;margin-bottom:12px;">${a.title}</div>
-    ${a.urlToImage ? `<img src="${a.urlToImage}" style="width:100%;border-radius:10px;margin-bottom:16px;object-fit:cover;max-height:180px;" onerror="this.style.display='none'">` : ''}
-    <div style="font-size:14px;color:rgba(240,244,252,0.85);line-height:1.7;margin-bottom:20px;">${a.description || ''}</div>
-    <a href="${a.url}" target="_blank" style="display:block;width:100%;padding:13px;border-radius:10px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.15);color:var(--text2);font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px;text-align:center;text-decoration:none;">Read Full Article →</a>
+    ${image ? `<img src="${image}" style="width:100%;border-radius:10px;margin-bottom:16px;object-fit:cover;max-height:180px;" onerror="this.style.display='none'">` : ''}
+    <div style="font-size:14px;color:rgba(240,244,252,0.85);line-height:1.8;margin-bottom:20px;">${content}</div>
+    <a href="${a.url}" target="_blank" style="display:block;width:100%;padding:13px;border-radius:10px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.15);color:var(--text2);font-family:var(--fb);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:12px;text-align:center;text-decoration:none;">Read on Source Site →</a>
     <button onclick="analyzeArticle(${index});closeDetail();" style="width:100%;padding:14px;border-radius:10px;background:var(--gold);color:#0a1628;font-family:var(--ff);font-size:14px;font-weight:800;border:none;cursor:pointer;">🔍 Get FullScope Analysis</button>
   `;
-  document.getElementById('detail-overlay').classList.add('open');
 }
 
 function analyzeArticle(index) {
