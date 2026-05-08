@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const SUPABASE_URL = process.env.FULLSCOPE_SUPABASE_URL!;
 const SUPABASE_ANON_KEY = process.env.FULLSCOPE_SUPABASE_ANON_KEY!;
+const SUPABASE_SERVICE_KEY = process.env.FULLSCOPE_SUPABASE_SERVICE_KEY!;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: corsHeaders });
     }
 
-    // Get user from token
+    // Verify user token
     const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
       headers: {
         'apikey': SUPABASE_ANON_KEY,
@@ -34,13 +35,13 @@ export async function GET(request: NextRequest) {
 
     const user = await userRes.json();
 
-    // Get saved analyses for this user
+    // Use service key to bypass RLS for select
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/saved_analyses?user_id=eq.${user.id}&order=created_at.desc&limit=20`,
       {
         headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': authHeader,
+          'apikey': SUPABASE_SERVICE_KEY,
+          'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
         },
       }
     );
