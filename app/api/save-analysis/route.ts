@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const SUPABASE_URL = process.env.FULLSCOPE_SUPABASE_URL!;
 const SUPABASE_ANON_KEY = process.env.FULLSCOPE_SUPABASE_ANON_KEY!;
+const SUPABASE_SERVICE_KEY = process.env.FULLSCOPE_SUPABASE_SERVICE_KEY!;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -26,7 +27,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400, headers: corsHeaders });
     }
 
-    // Get user from token
+    // Verify user token
     const userRes = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
       headers: {
         'apikey': SUPABASE_ANON_KEY,
@@ -40,13 +41,13 @@ export async function POST(request: NextRequest) {
 
     const user = await userRes.json();
 
-    // Save analysis to Supabase
+    // Use service key to bypass RLS for insert
     const res = await fetch(`${SUPABASE_URL}/rest/v1/saved_analyses`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': authHeader,
+        'apikey': SUPABASE_SERVICE_KEY,
+        'Authorization': `Bearer ${SUPABASE_SERVICE_KEY}`,
         'Prefer': 'return=representation',
       },
       body: JSON.stringify({
@@ -59,7 +60,7 @@ export async function POST(request: NextRequest) {
 
     const data = await res.json();
     if (!res.ok) {
-      return NextResponse.json({ error: 'Failed to save analysis' }, { status: res.status, headers: corsHeaders });
+      return NextResponse.json({ error: 'Failed to save: ' + JSON.stringify(data) }, { status: res.status, headers: corsHeaders });
     }
 
     return NextResponse.json({ success: true, id: data[0]?.id }, { headers: corsHeaders });
