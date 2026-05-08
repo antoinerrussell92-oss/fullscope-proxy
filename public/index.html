@@ -761,7 +761,7 @@ async function saveCurrentAnalysis() {
     } else {
       btn.textContent = '⭐ Save Analysis';
       btn.disabled = false;
-      showError('Could not save. Please try again.');
+      res.json().then(d => showError('Save failed: ' + (d.error || res.status))).catch(() => showError('Save failed: ' + res.status));
     }
   } catch(e) {
     btn.textContent = '⭐ Save Analysis';
