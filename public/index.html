@@ -39,7 +39,6 @@ html, body {
   touch-action: pan-y;
 }
 
-/* ── OUTER PHONE SHELL ── */
 .phone-shell {
   position: fixed;
   top: 50%;
@@ -53,7 +52,6 @@ html, body {
   box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 40px 120px rgba(0,0,0,0.8);
 }
 
-/* ── STATUS BAR ── */
 .status-bar {
   position: absolute;
   top: 0; left: 0; right: 0;
@@ -69,7 +67,6 @@ html, body {
 .status-time { font-size: 13px; font-weight: 700; color: #fff; font-family: var(--ff); }
 .status-icons { font-size: 12px; color: #fff; }
 
-/* ── SCREENS ── */
 .screen {
   position: absolute;
   inset: 0;
@@ -79,12 +76,8 @@ html, body {
   display: none;
 }
 .screen.active { display: block; }
-.feed-screen {
-  overflow: hidden;
-  bottom: 78px;
-}
+.feed-screen { overflow: hidden; bottom: 78px; }
 
-/* ── TAB SWITCHER (feed only) ── */
 .tab-bar {
   position: absolute;
   top: 44px;
@@ -113,7 +106,6 @@ html, body {
 }
 .tab-item.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-/* ── FEED CONTAINER ── */
 .feed-container {
   position: absolute;
   inset: 0;
@@ -126,7 +118,6 @@ html, body {
   will-change: transform;
 }
 
-/* ── STORY CARD ── */
 .story-card {
   position: relative;
   width: 100%;
@@ -279,7 +270,6 @@ html, body {
   white-space: nowrap; transition: all 0.15s;
 }
 
-/* ── SWIPE DOTS ── */
 .swipe-dots {
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
   display: flex; flex-direction: column; gap: 5px; z-index: 50;
@@ -287,7 +277,6 @@ html, body {
 .swipe-dot { width: 3px; border-radius: 2px; background: rgba(255,255,255,0.2); transition: all 0.3s; }
 .swipe-dot.active { background: var(--gold); box-shadow: 0 0 6px rgba(201,168,76,0.5); }
 
-/* ── SWIPE HINT ── */
 .swipe-hint {
   position: absolute; bottom: 90px; right: 18px;
   display: flex; flex-direction: column; align-items: center; gap: 4px;
@@ -303,7 +292,6 @@ html, body {
 @keyframes arrowBounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
 .swipe-hint-text { font-size: 9px; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; }
 
-/* ── BOTTOM NAV ── */
 .bottom-nav {
   position: absolute; bottom: 0; left: 0; right: 0;
   height: 78px;
@@ -326,7 +314,6 @@ html, body {
   border-radius: 0 0 2px 2px; transition: all 0.3s;
 }
 
-/* ── DETAIL OVERLAY ── */
 .detail-overlay {
   position: absolute; inset: 0; background: var(--navy);
   z-index: 200; transform: translateY(100%);
@@ -376,47 +363,29 @@ html, body {
 .global-pills { display: flex; flex-wrap: wrap; gap: 7px; }
 .global-pill { padding: 4px 11px; border-radius: 20px; font-size: 11px; background: rgba(255,255,255,0.06); border: 0.5px solid rgba(255,255,255,0.1); color: rgba(240,244,252,0.6); }
 
-/* Stars */
 .stars-overlay { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .star { position: absolute; background: #fff; border-radius: 50%; animation: twinkle var(--dur, 3s) infinite var(--delay, 0s); }
 @keyframes twinkle { 0%,100%{opacity:var(--op,0.4);} 50%{opacity:0.1;} }
 
 /* ── ANALYZE SCREEN ── */
-.analyze-screen-inner {
-  padding: 60px 18px 24px;
-}
-.analyze-screen-logo {
-  font-family: var(--ff); font-size: 18px; font-weight: 900; font-style: italic;
-  color: #fff; margin-bottom: 4px;
-}
+.analyze-screen-inner { padding: 60px 18px 24px; }
+.analyze-screen-logo { font-family: var(--ff); font-size: 18px; font-weight: 900; font-style: italic; color: #fff; margin-bottom: 4px; }
 .analyze-screen-logo span { color: var(--gold); }
-.analyze-screen-title {
-  font-family: var(--ff); font-size: 26px; font-weight: 800; font-style: italic;
-  color: #fff; margin-bottom: 6px; line-height: 1.2;
-}
-.analyze-screen-sub {
-  font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 22px;
-}
-.analyze-mode-tabs {
-  display: flex; gap: 8px; margin-bottom: 20px;
-}
+.analyze-screen-title { font-family: var(--ff); font-size: 26px; font-weight: 800; font-style: italic; color: #fff; margin-bottom: 6px; line-height: 1.2; }
+.analyze-screen-sub { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 22px; }
+.analyze-mode-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
 .analyze-mode-tab {
   flex: 1; padding: 9px 6px; border-radius: 8px;
   background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.1);
   font-size: 11px; font-weight: 700; color: var(--text2);
   cursor: pointer; text-align: center; transition: all 0.2s;
 }
-.analyze-mode-tab.active {
-  background: var(--gold-dim); border-color: rgba(201,168,76,0.3); color: var(--gold);
-}
+.analyze-mode-tab.active { background: var(--gold-dim); border-color: rgba(201,168,76,0.3); color: var(--gold); }
 .analyze-input-wrap {
   background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1);
   border-radius: 12px; margin-bottom: 12px; overflow: hidden;
 }
-.analyze-input-label {
-  font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
-  color: var(--text3); padding: 12px 14px 0;
-}
+.analyze-input-label { font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); padding: 12px 14px 0; }
 .analyze-textarea {
   width: 100%; background: transparent; border: none; outline: none;
   color: var(--white); font-family: var(--fb); font-size: 14px; line-height: 1.6;
@@ -432,9 +401,7 @@ html, body {
 }
 .analyze-btn:active { transform: scale(0.98); }
 .analyze-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.analyze-loading {
-  display: none; text-align: center; padding: 32px 0;
-}
+.analyze-loading { display: none; text-align: center; padding: 32px 0; }
 .analyze-loading.show { display: block; }
 .analyze-spinner {
   width: 36px; height: 36px; border-radius: 50%;
@@ -444,17 +411,13 @@ html, body {
 @keyframes spin { to { transform: rotate(360deg); } }
 .analyze-loading-text { font-size: 13px; color: var(--text2); }
 
-/* ── ANALYSIS RESULT ── */
 .result-wrap { display: none; }
 .result-wrap.show { display: block; }
 .result-section {
   border-radius: 12px; padding: 14px; margin-bottom: 12px;
   border: 0.5px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03);
 }
-.result-label {
-  font-size: 9px; font-weight: 700; letter-spacing: 1.3px;
-  text-transform: uppercase; margin-bottom: 8px;
-}
+.result-label { font-size: 9px; font-weight: 700; letter-spacing: 1.3px; text-transform: uppercase; margin-bottom: 8px; }
 .result-label.gold { color: var(--gold); }
 .result-label.blue { color: var(--left); }
 .result-label.amber { color: var(--amber); }
@@ -464,20 +427,14 @@ html, body {
 .result-text { font-size: 13px; color: var(--white); line-height: 1.7; }
 .result-sub { font-size: 12px; color: var(--text2); line-height: 1.6; margin-top: 5px; }
 .bias-meter-wrap { margin: 10px 0 8px; }
-.bias-meter-track {
-  height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px;
-  position: relative; overflow: visible;
-}
+.bias-meter-track { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; position: relative; overflow: visible; }
 .bias-meter-fill { height: 6px; background: var(--gold); border-radius: 3px; }
 .bias-meter-thumb {
   position: absolute; top: -5px; width: 16px; height: 16px;
   background: var(--gold); border-radius: 50%; margin-left: -8px;
   border: 2px solid var(--navy); box-shadow: 0 0 8px rgba(201,168,76,0.5);
 }
-.bias-meter-labels {
-  display: flex; justify-content: space-between; margin-top: 7px;
-  font-size: 9px; color: var(--text3); font-weight: 700; letter-spacing: 0.5px;
-}
+.bias-meter-labels { display: flex; justify-content: space-between; margin-top: 7px; font-size: 9px; color: var(--text3); font-weight: 700; letter-spacing: 0.5px; }
 .result-perspectives { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
 .result-persp { border-radius: 8px; padding: 10px 12px; border: 0.5px solid; }
 .result-persp.left { background: rgba(107,159,255,0.06); border-color: rgba(107,159,255,0.18); }
@@ -489,17 +446,9 @@ html, body {
 .result-persp.right .result-persp-label { color: var(--right); }
 .result-persp-text { font-size: 12px; color: rgba(240,244,252,0.8); line-height: 1.6; }
 .result-claims { list-style: none; margin-top: 6px; display: flex; flex-direction: column; gap: 6px; }
-.result-claims li {
-  font-size: 12px; color: var(--text2); line-height: 1.6;
-  padding-left: 14px; position: relative;
-}
-.result-claims li::before {
-  content: '·'; position: absolute; left: 0; color: var(--gold); font-size: 18px; top: -3px;
-}
-.result-verdict {
-  background: var(--gold-dim); border: 0.5px solid rgba(201,168,76,0.25);
-  border-radius: 12px; padding: 16px; margin-bottom: 12px;
-}
+.result-claims li { font-size: 12px; color: var(--text2); line-height: 1.6; padding-left: 14px; position: relative; }
+.result-claims li::before { content: '·'; position: absolute; left: 0; color: var(--gold); font-size: 18px; top: -3px; }
+.result-verdict { background: var(--gold-dim); border: 0.5px solid rgba(201,168,76,0.25); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
 .result-verdict-label { font-size: 9px; font-weight: 700; letter-spacing: 1.3px; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
 .result-verdict-text { font-family: var(--ff); font-size: 15px; font-style: italic; color: #fff; line-height: 1.5; }
 .result-global-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
@@ -510,15 +459,47 @@ html, body {
   color: var(--text2); font-family: var(--fb); font-size: 13px; font-weight: 600;
   cursor: pointer; margin-bottom: 24px; transition: all 0.15s;
 }
-.error-block {
-  display: none; border-radius: 12px; padding: 14px;
-  background: rgba(246,91,91,0.08); border: 0.5px solid rgba(246,91,91,0.2);
-  margin-bottom: 16px;
-}
+.error-block { display: none; border-radius: 12px; padding: 14px; background: rgba(246,91,91,0.08); border: 0.5px solid rgba(246,91,91,0.2); margin-bottom: 16px; }
 .error-block.show { display: block; }
 .error-block-text { font-size: 13px; color: var(--red); line-height: 1.6; }
 
-/* ── AUTH MODAL ── */ .auth-modal-bg {   position: absolute; inset: 0; background: rgba(0,0,0,0.7);   z-index: 500; display: none; align-items: center; justify-content: center;   backdrop-filter: blur(6px); } .auth-modal-bg.open { display: flex; } .auth-modal {   background: var(--navy2); border: 0.5px solid rgba(201,168,76,0.25);   border-radius: 20px; padding: 28px 22px; width: calc(100% - 40px); max-width: 340px; } .auth-modal-logo {   font-family: var(--ff); font-size: 18px; font-weight: 900; font-style: italic;   color: #fff; text-align: center; margin-bottom: 6px; } .auth-modal-logo span { color: var(--gold); } .auth-modal-title {   font-family: var(--ff); font-size: 22px; font-weight: 800; color: #fff;   text-align: center; margin-bottom: 6px; } .auth-modal-sub {   font-size: 12px; color: var(--text2); text-align: center; margin-bottom: 22px; line-height: 1.5; } .auth-input-group { margin-bottom: 12px; } .auth-input-label {   font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;   color: var(--text3); margin-bottom: 5px; display: block; } .auth-input {   width: 100%; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.12);   border-radius: 10px; padding: 12px 14px; color: var(--white);   font-family: var(--fb); font-size: 14px; outline: none; } .auth-input:focus { border-color: rgba(201,168,76,0.4); } .auth-btn {   width: 100%; padding: 14px; border-radius: 10px; background: var(--gold);   color: #0a1628; font-family: var(--ff); font-size: 15px; font-weight: 800;   border: none; cursor: pointer; margin-top: 6px; margin-bottom: 12px; } .auth-btn:disabled { opacity: 0.45; cursor: not-allowed; } .auth-toggle {   text-align: center; font-size: 12px; color: var(--text2); } .auth-toggle span { color: var(--gold); cursor: pointer; font-weight: 700; } .auth-error {   font-size: 12px; color: var(--red); text-align: center;   margin-bottom: 10px; display: none; line-height: 1.5; } .auth-error.show { display: block; } .auth-success {   font-size: 12px; color: var(--positive); text-align: center;   margin-bottom: 10px; display: none; line-height: 1.5; } .auth-success.show { display: block; }  /* ── PROFILE SCREEN ── */
+/* ── AUTH MODAL ── */
+.auth-modal-bg {
+  position: absolute; inset: 0; background: rgba(0,0,0,0.7);
+  z-index: 500; display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(6px);
+}
+.auth-modal-bg.open { display: flex; }
+.auth-modal {
+  background: var(--navy2); border: 0.5px solid rgba(201,168,76,0.25);
+  border-radius: 20px; padding: 28px 22px; width: calc(100% - 40px); max-width: 340px;
+}
+.auth-modal-logo { font-family: var(--ff); font-size: 18px; font-weight: 900; font-style: italic; color: #fff; text-align: center; margin-bottom: 6px; }
+.auth-modal-logo span { color: var(--gold); }
+.auth-modal-title { font-family: var(--ff); font-size: 22px; font-weight: 800; color: #fff; text-align: center; margin-bottom: 6px; }
+.auth-modal-sub { font-size: 12px; color: var(--text2); text-align: center; margin-bottom: 22px; line-height: 1.5; }
+.auth-input-group { margin-bottom: 12px; }
+.auth-input-label { font-size: 9px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text3); margin-bottom: 5px; display: block; }
+.auth-input {
+  width: 100%; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.12);
+  border-radius: 10px; padding: 12px 14px; color: var(--white);
+  font-family: var(--fb); font-size: 14px; outline: none;
+}
+.auth-input:focus { border-color: rgba(201,168,76,0.4); }
+.auth-btn {
+  width: 100%; padding: 14px; border-radius: 10px; background: var(--gold);
+  color: #0a1628; font-family: var(--ff); font-size: 15px; font-weight: 800;
+  border: none; cursor: pointer; margin-top: 6px; margin-bottom: 12px;
+}
+.auth-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.auth-toggle { text-align: center; font-size: 12px; color: var(--text2); }
+.auth-toggle span { color: var(--gold); cursor: pointer; font-weight: 700; }
+.auth-error { font-size: 12px; color: var(--red); text-align: center; margin-bottom: 10px; display: none; line-height: 1.5; }
+.auth-error.show { display: block; }
+.auth-success { font-size: 12px; color: var(--positive); text-align: center; margin-bottom: 10px; display: none; line-height: 1.5; }
+.auth-success.show { display: block; }
+
+/* ── PROFILE SCREEN ── */
 .profile-inner { padding: 60px 18px 40px; }
 .profile-avatar-wrap { display: flex; flex-direction: column; align-items: center; margin-bottom: 28px; }
 .profile-avatar {
@@ -529,19 +510,11 @@ html, body {
 }
 .profile-name { font-family: var(--ff); font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 4px; }
 .profile-plan { font-size: 11px; font-weight: 700; color: var(--gold); letter-spacing: 0.8px; text-transform: uppercase; }
-.profile-stats {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px;
-}
-.profile-stat {
-  background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.08);
-  border-radius: 12px; padding: 14px; text-align: center;
-}
+.profile-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.profile-stat { background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 14px; text-align: center; }
 .profile-stat-num { font-family: var(--ff); font-size: 28px; font-weight: 800; color: var(--gold); }
 .profile-stat-label { font-size: 10px; color: var(--text2); margin-top: 3px; font-weight: 600; }
-.profile-section-title {
-  font-size: 9px; font-weight: 700; letter-spacing: 1.3px; text-transform: uppercase;
-  color: var(--text3); margin-bottom: 12px;
-}
+.profile-section-title { font-size: 9px; font-weight: 700; letter-spacing: 1.3px; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
 .bias-audit-bars { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
 .bias-bar-row { display: flex; flex-direction: column; gap: 5px; }
 .bias-bar-label { display: flex; justify-content: space-between; }
@@ -550,15 +523,8 @@ html, body {
 .bias-bar-track { height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
 .bias-bar-fill { height: 5px; border-radius: 3px; transition: width 0.8s ease; }
 .profile-actions { display: flex; flex-direction: column; gap: 10px; }
-.profile-btn-gold {
-  width: 100%; padding: 14px; border-radius: 10px; background: var(--gold); color: #0a1628;
-  font-family: var(--ff); font-size: 14px; font-weight: 800; border: none; cursor: pointer;
-}
-.profile-btn-muted {
-  width: 100%; padding: 13px; border-radius: 10px;
-  background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.1);
-  color: var(--text2); font-family: var(--fb); font-size: 13px; font-weight: 600; cursor: pointer;
-}
+.profile-btn-gold { width: 100%; padding: 14px; border-radius: 10px; background: var(--gold); color: #0a1628; font-family: var(--ff); font-size: 14px; font-weight: 800; border: none; cursor: pointer; }
+.profile-btn-muted { width: 100%; padding: 13px; border-radius: 10px; background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.1); color: var(--text2); font-family: var(--fb); font-size: 13px; font-weight: 600; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -571,10 +537,8 @@ html, body {
     <span class="status-icons">●●● 📶 🔋</span>
   </div>
 
-  <!-- ══ FEED SCREEN ══ -->
+  <!-- FEED SCREEN -->
   <div class="screen feed-screen active" id="screen-feed">
-
-    <!-- Tab bar -->
     <div class="tab-bar">
       <div class="tab-item active" onclick="setFeedTab(this,'all')">For You</div>
       <div class="tab-item" onclick="setFeedTab(this,'global')">🌍 Global</div>
@@ -582,68 +546,46 @@ html, body {
       <div class="tab-item" onclick="setFeedTab(this,'business')">📈 Business</div>
       <div class="tab-item" onclick="setFeedTab(this,'positive')">✨ Good News</div>
     </div>
-
-    <!-- Feed -->
     <div class="feed-container" id="feed-container">
       <div class="cards-track" id="cards-track"></div>
     </div>
-
-    <!-- Swipe dots -->
     <div class="swipe-dots" id="swipe-dots"></div>
-
-    <!-- Swipe hint -->
     <div class="swipe-hint" id="swipe-hint">
       <div class="swipe-hint-arrow">↑</div>
       <div class="swipe-hint-text">Swipe</div>
     </div>
+  </div>
 
-  </div><!-- /feed screen -->
-
-  <!-- ══ ANALYZE SCREEN ══ -->
+  <!-- ANALYZE SCREEN -->
   <div class="screen" id="screen-analyze" style="overflow-y:auto;">
     <div class="analyze-screen-inner">
-
       <div class="analyze-screen-logo">Full<span>Scope</span></div>
       <div class="analyze-screen-title">Analyzer</div>
       <div class="analyze-screen-sub">Paste any article, URL, or video link to get a full bias, framing, and credibility breakdown.</div>
-
-      <!-- Mode tabs -->
       <div class="analyze-mode-tabs">
         <div class="analyze-mode-tab active" onclick="setAnalyzeMode('article',this)">📰 Article</div>
         <div class="analyze-mode-tab" onclick="setAnalyzeMode('video',this)">▶ Video</div>
         <div class="analyze-mode-tab" onclick="setAnalyzeMode('claim',this)">⚡ Claim</div>
       </div>
-
-      <!-- Input -->
       <div class="analyze-input-wrap">
         <div class="analyze-input-label" id="analyze-input-label">PASTE ARTICLE TEXT OR URL</div>
         <textarea class="analyze-textarea" id="analyze-textarea" placeholder="Paste article text, URL, or claim here…" rows="5"></textarea>
       </div>
-
-      <!-- Button -->
       <button class="analyze-btn" id="analyze-btn" onclick="runAnalysis()">
         <span>🔍</span> <span id="analyze-btn-text">Analyze Article</span>
       </button>
-
-      <!-- Error -->
       <div class="error-block" id="analyze-error">
         <div class="error-block-text" id="analyze-error-text"></div>
       </div>
-
-      <!-- Loading -->
       <div class="analyze-loading" id="analyze-loading">
         <div class="analyze-spinner"></div>
         <div class="analyze-loading-text">Claude is analyzing…</div>
       </div>
-
-      <!-- Result -->
       <div class="result-wrap" id="result-wrap">
-
         <div class="result-section" id="result-summary-section">
           <div class="result-label gold">Summary</div>
           <div class="result-text" id="result-summary"></div>
         </div>
-
         <div class="result-section">
           <div class="result-label gold">Bias Rating</div>
           <div class="result-text" id="result-bias-label"></div>
@@ -656,12 +598,10 @@ html, body {
           </div>
           <div class="result-sub" id="result-bias-explanation"></div>
         </div>
-
         <div class="result-section">
           <div class="result-label blue">Key Claims</div>
           <ul class="result-claims" id="result-claims"></ul>
         </div>
-
         <div class="result-section">
           <div class="result-label gold">All Perspectives</div>
           <div class="result-perspectives">
@@ -679,27 +619,20 @@ html, body {
             </div>
           </div>
         </div>
-
         <div class="result-section">
           <div class="result-label amber">What's Missing</div>
           <div class="result-text" id="result-missing"></div>
         </div>
-
         <div class="result-section">
           <div class="result-label purple">Global Coverage</div>
           <div class="result-global-pills" id="result-global"></div>
         </div>
-
         <div class="result-verdict">
           <div class="result-verdict-label">FullScope Verdict</div>
           <div class="result-verdict-text" id="result-verdict"></div>
         </div>
-
         <button class="analyze-reset-btn" onclick="resetAnalysis()">← Analyze another</button>
-
-      </div><!-- /result-wrap -->
-
-      <!-- Claim result (separate) -->
+      </div>
       <div class="result-wrap" id="claim-result-wrap">
         <div class="result-section" id="claim-result-section">
           <div class="result-label" id="claim-verdict-label">Verdict</div>
@@ -709,19 +642,17 @@ html, body {
         </div>
         <button class="analyze-reset-btn" onclick="resetAnalysis()">← Check another claim</button>
       </div>
-
     </div>
-  </div><!-- /analyze screen -->
+  </div>
 
-  <!-- ══ PROFILE SCREEN ══ -->
+  <!-- PROFILE SCREEN -->
   <div class="screen" id="screen-profile" style="overflow-y:auto;">
     <div class="profile-inner">
       <div class="profile-avatar-wrap">
         <div class="profile-avatar">👤</div>
-        <div class="profile-name">FullScope Member</div>
-        <div class="profile-plan">Free Plan</div>
+        <div class="profile-name" id="profile-name">FullScope Member</div>
+        <div class="profile-plan" id="profile-plan">Free Plan</div>
       </div>
-
       <div class="profile-stats">
         <div class="profile-stat">
           <div class="profile-stat-num" id="profile-used">0</div>
@@ -732,7 +663,6 @@ html, body {
           <div class="profile-stat-label">Monthly Limit</div>
         </div>
       </div>
-
       <div class="profile-section-title">Personal Bias Audit</div>
       <div class="bias-audit-bars" id="bias-audit-bars">
         <div class="bias-bar-row">
@@ -764,48 +694,67 @@ html, body {
           <div class="bias-bar-track"><div class="bias-bar-fill" id="bias-fill-global" style="width:0%;background:var(--purple);"></div></div>
         </div>
       </div>
-
       <div class="profile-actions">
         <button class="profile-btn-gold">Upgrade to Plus ✦</button>
         <button class="profile-btn-muted" onclick="showScreen('analyze')">Go to Analyzer →</button>
-        <button class="profile-btn-muted" onclick="showScreen('feed')">Back to Feed →</button>         <button class="profile-btn-muted" onclick="signOut();showScreen('feed')">Sign Out</button>
+        <button class="profile-btn-muted" onclick="showScreen('feed')">Back to Feed →</button>
+        <button class="profile-btn-muted" onclick="signOut()">Sign Out</button>
       </div>
     </div>
-  </div><!-- /profile screen -->
+  </div>
 
-  <!-- ══ BOTTOM NAV ══ -->
+  <!-- BOTTOM NAV -->
   <div class="bottom-nav">
     <div class="nav-item active" id="nav-feed" onclick="showScreen('feed')">
-      <div style="position:relative;">
-        <div class="nav-active-bar" id="nav-bar-feed"></div>
-      </div>
+      <div style="position:relative;"><div class="nav-active-bar" id="nav-bar-feed"></div></div>
       <div class="nav-icon">📰</div>
       <div class="nav-label">Feed</div>
     </div>
     <div class="nav-item" id="nav-analyze" onclick="showScreen('analyze')">
-      <div style="position:relative;">
-        <div class="nav-active-bar" id="nav-bar-analyze" style="display:none;"></div>
-      </div>
+      <div style="position:relative;"><div class="nav-active-bar" id="nav-bar-analyze" style="display:none;"></div></div>
       <div class="nav-icon">🔍</div>
       <div class="nav-label">Analyze</div>
     </div>
     <div class="nav-item" id="nav-claims" onclick="showScreen('analyze');setAnalyzeMode('claim',document.querySelectorAll('.analyze-mode-tab')[2])">
-      <div style="position:relative;">
-        <div class="nav-active-bar" id="nav-bar-claims" style="display:none;"></div>
-      </div>
+      <div style="position:relative;"><div class="nav-active-bar" id="nav-bar-claims" style="display:none;"></div></div>
       <div class="nav-icon">⚡</div>
       <div class="nav-label">Claims</div>
     </div>
     <div class="nav-item" id="nav-profile" onclick="showScreen('profile');loadBiasAudit()">
-      <div style="position:relative;">
-        <div class="nav-active-bar" id="nav-bar-profile" style="display:none;"></div>
-      </div>
+      <div style="position:relative;"><div class="nav-active-bar" id="nav-bar-profile" style="display:none;"></div></div>
       <div class="nav-icon">👤</div>
       <div class="nav-label">Profile</div>
     </div>
   </div>
 
-  <!-- ══ AUTH MODAL ══ -->   <div class="auth-modal-bg" id="auth-modal-bg">     <div class="auth-modal">       <div class="auth-modal-logo">Full<span>Scope</span></div>       <div class="auth-modal-title" id="auth-modal-title">Sign In</div>       <div class="auth-modal-sub" id="auth-modal-sub">Access your analyses and reading history.</div>       <div class="auth-error" id="auth-error"></div>       <div class="auth-success" id="auth-success"></div>       <div class="auth-input-group" id="auth-name-group" style="display:none;">         <label class="auth-input-label">Full Name</label>         <input class="auth-input" id="auth-name" type="text" placeholder="Your name" autocomplete="name">       </div>       <div class="auth-input-group">         <label class="auth-input-label">Email</label>         <input class="auth-input" id="auth-email" type="email" placeholder="you@email.com" autocomplete="email">       </div>       <div class="auth-input-group">         <label class="auth-input-label">Password</label>         <input class="auth-input" id="auth-password" type="password" placeholder="••••••••" autocomplete="current-password">       </div>       <button class="auth-btn" id="auth-submit-btn" onclick="submitAuth()">Sign In</button>       <div class="auth-toggle" id="auth-toggle">         No account? <span onclick="switchAuthMode()">Sign up free</span>       </div>     </div>   </div>    <!-- ══ STORY DETAIL OVERLAY ══ -->
+  <!-- AUTH MODAL -->
+  <div class="auth-modal-bg" id="auth-modal-bg">
+    <div class="auth-modal">
+      <div class="auth-modal-logo">Full<span>Scope</span></div>
+      <div class="auth-modal-title" id="auth-modal-title">Sign In</div>
+      <div class="auth-modal-sub" id="auth-modal-sub">Access your analyses and reading history.</div>
+      <div class="auth-error" id="auth-error"></div>
+      <div class="auth-success" id="auth-success"></div>
+      <div class="auth-input-group" id="auth-name-group" style="display:none;">
+        <label class="auth-input-label">Full Name</label>
+        <input class="auth-input" id="auth-name" type="text" placeholder="Your name" autocomplete="name">
+      </div>
+      <div class="auth-input-group">
+        <label class="auth-input-label">Email</label>
+        <input class="auth-input" id="auth-email" type="email" placeholder="you@email.com" autocomplete="email">
+      </div>
+      <div class="auth-input-group">
+        <label class="auth-input-label">Password</label>
+        <input class="auth-input" id="auth-password" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button class="auth-btn" id="auth-submit-btn" onclick="submitAuth()">Sign In</button>
+      <div class="auth-toggle" id="auth-toggle">
+        No account? <span onclick="switchAuthMode()">Sign up free</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORY DETAIL OVERLAY -->
   <div class="detail-overlay" id="detail-overlay">
     <div class="detail-close-bar">
       <div class="close-btn" onclick="closeDetail()">←</div>
@@ -814,12 +763,134 @@ html, body {
     <div class="detail-body" id="detail-body"></div>
   </div>
 
-</div><!-- /phone-shell -->
+</div>
 
 <script>
-// ── PROXY CONFIG ──
+// ── CONFIG ──
 const PROXY_URL = 'https://fullscope-proxy.vercel.app/api/analyze';
-const FREE_LIMIT = 5; const AUTH_URL = 'https://fullscope-proxy.vercel.app/api/auth';  // ── AUTH STATE ── let authSession = null; let authMode = 'login';  function openAuthModal() {   authMode = 'login';   setAuthMode('login');   document.getElementById('screen-feed').classList.add('active');   document.getElementById('auth-modal-bg').classList.add('open'); }  function closeAuthModal() {   document.getElementById('auth-modal-bg').classList.remove('open');   document.getElementById('auth-error').classList.remove('show');   document.getElementById('auth-success').classList.remove('show');   document.getElementById('auth-email').value = '';   document.getElementById('auth-password').value = '';   document.getElementById('auth-name').value = ''; }  function switchAuthMode() {   authMode = authMode === 'login' ? 'signup' : 'login';   setAuthMode(authMode); }  function setAuthMode(mode) {   const isSignup = mode === 'signup';   document.getElementById('auth-modal-title').textContent = isSignup ? 'Create Account' : 'Sign In';   document.getElementById('auth-modal-sub').textContent = isSignup     ? 'Join FullScope free — no credit card needed.'     : 'Access your analyses and reading history.';   document.getElementById('auth-name-group').style.display = isSignup ? 'block' : 'none';   document.getElementById('auth-submit-btn').textContent = isSignup ? 'Create Account' : 'Sign In';   document.getElementById('auth-toggle').innerHTML = isSignup     ? 'Already have an account? <span onclick="switchAuthMode()">Sign in</span>'     : 'No account? <span onclick="switchAuthMode()">Sign up free</span>';   document.getElementById('auth-error').classList.remove('show');   document.getElementById('auth-success').classList.remove('show'); }  async function submitAuth() {   const email = document.getElementById('auth-email').value.trim();   const password = document.getElementById('auth-password').value.trim();   const full_name = document.getElementById('auth-name').value.trim();   const btn = document.getElementById('auth-submit-btn');    if (!email || !password) {     showAuthError('Please enter your email and password.');     return;   }    btn.disabled = true;   btn.textContent = authMode === 'signup' ? 'Creating account…' : 'Signing in…';   document.getElementById('auth-error').classList.remove('show');   document.getElementById('auth-success').classList.remove('show');    try {     const res = await fetch(AUTH_URL, {       method: 'POST',       headers: { 'Content-Type': 'application/json' },       body: JSON.stringify({ action: authMode, email, password, full_name })     });     const data = await res.json();     if (!res.ok) {       showAuthError(data.error || 'Something went wrong. Please try again.');       return;     }     if (authMode === 'signup') {       showAuthSuccess('Account created! Check your email to confirm, then sign in.');       setAuthMode('login');       authMode = 'login';     } else {       authSession = { access_token: data.access_token, user: data.user };       closeAuthModal();       updateProfileUI();     }   } catch(e) {     showAuthError('Network error. Please try again.');   } finally {     btn.disabled = false;     btn.textContent = authMode === 'signup' ? 'Create Account' : 'Sign In';   } }  function showAuthError(msg) {   const el = document.getElementById('auth-error');   el.textContent = msg;   el.classList.add('show'); }  function showAuthSuccess(msg) {   const el = document.getElementById('auth-success');   el.textContent = msg;   el.classList.add('show'); }  function updateProfileUI() {   if (authSession && authSession.user) {     const name = authSession.user.user_metadata?.full_name || authSession.user.email || 'Member';     document.getElementById('profile-name').textContent = name;     document.getElementById('profile-plan').textContent = 'Free Plan';   } }  function signOut() {   authSession = null;   document.getElementById('profile-name').textContent = 'FullScope Member';   document.getElementById('profile-plan').textContent = 'Free Plan'; }
+const AUTH_URL = 'https://fullscope-proxy.vercel.app/api/auth';
+const FREE_LIMIT = 5;
+
+// ── AUTH STATE ──
+let authSession = null;
+let authMode = 'login';
+
+function openAuthModal() {
+  authMode = 'login';
+  setAuthMode('login');
+  document.getElementById('auth-modal-bg').classList.add('open');
+}
+
+function closeAuthModal() {
+  document.getElementById('auth-modal-bg').classList.remove('open');
+  document.getElementById('auth-error').classList.remove('show');
+  document.getElementById('auth-success').classList.remove('show');
+  document.getElementById('auth-email').value = '';
+  document.getElementById('auth-password').value = '';
+  document.getElementById('auth-name').value = '';
+}
+
+function switchAuthMode() {
+  authMode = authMode === 'login' ? 'signup' : 'login';
+  setAuthMode(authMode);
+}
+
+function setAuthMode(mode) {
+  const isSignup = mode === 'signup';
+  document.getElementById('auth-modal-title').textContent = isSignup ? 'Create Account' : 'Sign In';
+  document.getElementById('auth-modal-sub').textContent = isSignup
+    ? 'Join FullScope free — no credit card needed.'
+    : 'Access your analyses and reading history.';
+  document.getElementById('auth-name-group').style.display = isSignup ? 'block' : 'none';
+  document.getElementById('auth-submit-btn').textContent = isSignup ? 'Create Account' : 'Sign In';
+  document.getElementById('auth-toggle').innerHTML = isSignup
+    ? 'Already have an account? <span onclick="switchAuthMode()">Sign in</span>'
+    : 'No account? <span onclick="switchAuthMode()">Sign up free</span>';
+  document.getElementById('auth-error').classList.remove('show');
+  document.getElementById('auth-success').classList.remove('show');
+}
+
+async function submitAuth() {
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value.trim();
+  const full_name = document.getElementById('auth-name').value.trim();
+  const btn = document.getElementById('auth-submit-btn');
+  if (!email || !password) { showAuthError('Please enter your email and password.'); return; }
+  btn.disabled = true;
+  btn.textContent = authMode === 'signup' ? 'Creating account…' : 'Signing in…';
+  document.getElementById('auth-error').classList.remove('show');
+  document.getElementById('auth-success').classList.remove('show');
+  try {
+    const res = await fetch(AUTH_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: authMode, email, password, full_name })
+    });
+    const data = await res.json();
+    if (!res.ok) { showAuthError(data.error || 'Something went wrong. Please try again.'); return; }
+    if (authMode === 'signup') {
+      showAuthSuccess('Account created! Check your email to confirm, then sign in.');
+      setAuthMode('login');
+      authMode = 'login';
+    } else {
+      authSession = { access_token: data.access_token, user: data.user };
+      closeAuthModal();
+      updateProfileUI();
+      showScreen('profile');
+      loadBiasAudit();
+    }
+  } catch(e) {
+    showAuthError('Network error. Please try again.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = authMode === 'signup' ? 'Create Account' : 'Sign In';
+  }
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById('auth-error');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+function showAuthSuccess(msg) {
+  const el = document.getElementById('auth-success');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+
+function updateProfileUI() {
+  if (authSession && authSession.user) {
+    const name = authSession.user.user_metadata?.full_name || authSession.user.email || 'Member';
+    document.getElementById('profile-name').textContent = name;
+    document.getElementById('profile-plan').textContent = 'Free Plan';
+  }
+}
+
+function signOut() {
+  authSession = null;
+  document.getElementById('profile-name').textContent = 'FullScope Member';
+  document.getElementById('profile-plan').textContent = 'Free Plan';
+  showScreen('feed');
+}
+
+// ── SCREEN NAVIGATION ──
+function showScreen(name) {
+  if (name === 'profile' && !authSession) {
+    openAuthModal();
+    return;
+  }
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.nav-active-bar').forEach(b => b.style.display = 'none');
+  document.getElementById('screen-' + name).classList.add('active');
+  const navEl = document.getElementById('nav-' + name);
+  if (navEl) {
+    navEl.classList.add('active');
+    const bar = document.getElementById('nav-bar-' + name);
+    if (bar) bar.style.display = 'block';
+  }
+}
 
 // ── STORY DATA ──
 const allStories = {
@@ -951,21 +1022,6 @@ let currentFeedTab = 'all';
 let currentIndex = 0;
 let startY = 0, currentY = 0, isDragging = false;
 
-// ── SCREEN NAVIGATION ──
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelectorAll('.nav-active-bar').forEach(b => b.style.display = 'none');
-  openAuthModal();     return;   }   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));   document.querySelectorAll('.nav-active-bar').forEach(b => b.style.display = 'none');   document.getElementById('screen-' + name).classList.add('active');
-  const navEl = document.getElementById('nav-' + name);
-  if (navEl) {
-    navEl.classList.add('active');
-    const bar = document.getElementById('nav-bar-' + name);
-    if (bar) bar.style.display = 'block';
-  }
-}
-
-// ── FEED TAB ──
 function setFeedTab(el, tab) {
   document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
@@ -974,13 +1030,11 @@ function setFeedTab(el, tab) {
   renderCards();
 }
 
-// ── CARD HEIGHT ──
 function getCardHeight() {
   const phone = document.getElementById('phone');
   return phone ? phone.getBoundingClientRect().height : Math.min(844, window.innerHeight);
 }
 
-// ── BUILD STARS ──
 function buildStars(container) {
   const overlay = document.createElement('div');
   overlay.className = 'stars-overlay';
@@ -994,40 +1048,31 @@ function buildStars(container) {
   container.appendChild(overlay);
 }
 
-// ── BUILD CARD ──
 function buildCard(story, ch) {
   const card = document.createElement('div');
   card.className = `story-card ${story.bg}`;
   card.style.height = ch + 'px';
-
   const geo = document.createElement('div');
   geo.className = 'card-geo';
   card.appendChild(geo);
-
   const grid = document.createElement('div');
   grid.className = 'card-grid-overlay';
   card.appendChild(grid);
-
   if (story.bg === 'bg-global') buildStars(card);
-
   const meta = document.createElement('div');
   meta.className = 'card-top-meta';
   meta.innerHTML = `<span class="card-category-badge ${story.badge}">${story.badgeLabel}</span><span class="card-time">${story.time}</span><span class="card-source-count">${story.sources} sources</span>`;
   card.appendChild(meta);
-
   const hl = document.createElement('div');
   hl.className = 'card-headline-area';
   hl.innerHTML = `<div class="card-headline">${story.headline}</div><div class="card-deck">${story.deck}</div>`;
   card.appendChild(hl);
-
-  const stories_list = allStories[currentFeedTab] || allStories.all;
   const lchips = story.chips.l.map(s=>`<span class="source-chip l">${s}</span>`).join('');
   const cchips = story.chips.c.map(s=>`<span class="source-chip c">${s}</span>`).join('');
   const rchips = story.chips.r.map(s=>`<span class="source-chip r">${s}</span>`).join('');
   const totalChips = story.chips.l.length + story.chips.c.length + story.chips.r.length;
   const moreCount = story.sources - totalChips;
   const moreChip = moreCount > 0 ? `<span class="source-chip more">+${moreCount} more</span>` : '';
-
   const shelf = document.createElement('div');
   shelf.className = 'card-shelf';
   shelf.innerHTML = `
@@ -1048,7 +1093,6 @@ function buildCard(story, ch) {
   return card;
 }
 
-// ── RENDER CARDS ──
 function renderCards() {
   const track = document.getElementById('cards-track');
   const ch = getCardHeight();
@@ -1102,12 +1146,8 @@ function goToCard(idx) {
   updateTrack(true);
 }
 
-// ── SWIPE ──
 const feedEl = document.getElementById('feed-container');
-feedEl.addEventListener('touchstart', e => {
-  startY = e.touches[0].clientY; isDragging = true;
-  document.getElementById('cards-track').style.transition = 'none';
-}, {passive:true});
+feedEl.addEventListener('touchstart', e => { startY = e.touches[0].clientY; isDragging = true; document.getElementById('cards-track').style.transition = 'none'; }, {passive:true});
 feedEl.addEventListener('touchmove', e => {
   if (!isDragging) return;
   currentY = e.touches[0].clientY;
@@ -1149,7 +1189,6 @@ window.addEventListener('keydown', e => {
   }
 });
 
-// ── DETAIL OVERLAY ──
 function openDetail(id) {
   const stories_list = allStories[currentFeedTab] || allStories.all;
   const story = stories_list.find(s => s.id === id);
@@ -1195,7 +1234,6 @@ function closeDetail() {
   document.getElementById('detail-overlay').classList.remove('open');
 }
 
-// ── ANALYZE MODE ──
 let currentMode = 'article';
 function setAnalyzeMode(mode, el) {
   currentMode = mode;
@@ -1210,7 +1248,6 @@ function setAnalyzeMode(mode, el) {
   resetAnalysis();
 }
 
-// ── USAGE TRACKING ──
 function getUsage() {
   try {
     const key = `${new Date().getFullYear()}-${new Date().getMonth()}`;
@@ -1238,59 +1275,28 @@ function trackBias(lean) {
   } catch(e) {}
 }
 
-// ── RUN ANALYSIS ──
 async function runAnalysis() {
   const text = document.getElementById('analyze-textarea').value.trim();
   if (!text) return;
-
   const usage = getUsage();
   if (usage.count >= FREE_LIMIT) {
     showError('You\'ve used all 5 free analyses this month. Upgrade to Plus for 50 analyses/month.');
     return;
   }
-
   document.getElementById('analyze-btn').disabled = true;
   document.getElementById('analyze-loading').classList.add('show');
   document.getElementById('analyze-error').classList.remove('show');
   document.getElementById('result-wrap').classList.remove('show');
   document.getElementById('claim-result-wrap').classList.remove('show');
-
   try {
     let systemPrompt, maxTokens;
-
     if (currentMode === 'claim') {
-      systemPrompt = `You are FullScope's fact-checking engine. Analyze any claim and respond ONLY with valid JSON, no markdown, no preamble.
-
-Return exactly:
-{
-  "verdict": "true|false|misleading|missing_context",
-  "headline": "max 8 words",
-  "explanation": "2-3 sentences plain language",
-  "sources": ["source 1", "source 2"],
-  "nuance": "one sentence on complexity"
-}`;
+      systemPrompt = `You are FullScope's fact-checking engine. Analyze any claim and respond ONLY with valid JSON, no markdown, no preamble.\n\nReturn exactly:\n{\n  "verdict": "true|false|misleading|missing_context",\n  "headline": "max 8 words",\n  "explanation": "2-3 sentences plain language",\n  "sources": ["source 1", "source 2"],\n  "nuance": "one sentence on complexity"\n}`;
       maxTokens = 400;
     } else {
-      systemPrompt = `You are FullScope's media analysis engine. Analyze news articles and videos. Respond ONLY with valid JSON, no markdown, no preamble.
-
-Return exactly:
-{
-  "title": "clean headline",
-  "summary": "2-3 sentence factual summary",
-  "bias_lean": "left|center|right|unclear",
-  "bias_score": 0-100,
-  "bias_explanation": "1-2 sentences",
-  "key_claims": ["claim 1", "claim 2", "claim 3"],
-  "left_perspective": "left framing in 1-2 sentences",
-  "center_perspective": "factual view in 1-2 sentences",
-  "right_perspective": "right framing in 1-2 sentences",
-  "whats_missing": "important context absent from coverage",
-  "global_coverage": ["angle 1", "angle 2", "angle 3"],
-  "verdict": "bottom line FullScope verdict in 1-2 sentences"
-}`;
+      systemPrompt = `You are FullScope's media analysis engine. Analyze news articles and videos. Respond ONLY with valid JSON, no markdown, no preamble.\n\nReturn exactly:\n{\n  "title": "clean headline",\n  "summary": "2-3 sentence factual summary",\n  "bias_lean": "left|center|right|unclear",\n  "bias_score": 0-100,\n  "bias_explanation": "1-2 sentences",\n  "key_claims": ["claim 1", "claim 2", "claim 3"],\n  "left_perspective": "left framing in 1-2 sentences",\n  "center_perspective": "factual view in 1-2 sentences",\n  "right_perspective": "right framing in 1-2 sentences",\n  "whats_missing": "important context absent from coverage",\n  "global_coverage": ["angle 1", "angle 2", "angle 3"],\n  "verdict": "bottom line FullScope verdict in 1-2 sentences"\n}`;
       maxTokens = 1200;
     }
-
     const response = await fetch(PROXY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1300,22 +1306,18 @@ Return exactly:
         max_tokens: maxTokens
       })
     });
-
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
       throw new Error(err?.error || `Request failed (${response.status})`);
     }
-
     const r = await response.json();
     incrementUsage();
-
     if (currentMode === 'claim') {
       renderClaimResult(r);
     } else {
       renderAnalysisResult(r);
       trackBias(r.bias_lean);
     }
-
   } catch(e) {
     showError(e.message || 'Analysis failed. Please try again.');
   } finally {
@@ -1333,12 +1335,10 @@ function renderAnalysisResult(r) {
   document.getElementById('result-summary').textContent = r.summary || '';
   document.getElementById('result-bias-label').textContent = r.bias_lean ? r.bias_lean.charAt(0).toUpperCase() + r.bias_lean.slice(1) : '';
   document.getElementById('result-bias-explanation').textContent = r.bias_explanation || '';
-
   const score = r.bias_score || 50;
   const pct = score + '%';
   document.getElementById('bias-meter-fill').style.width = pct;
   document.getElementById('bias-meter-thumb').style.left = pct;
-
   const claimsEl = document.getElementById('result-claims');
   claimsEl.innerHTML = '';
   (r.key_claims || []).forEach(c => {
@@ -1346,17 +1346,13 @@ function renderAnalysisResult(r) {
     li.textContent = c;
     claimsEl.appendChild(li);
   });
-
   document.getElementById('result-left').textContent = r.left_perspective || '';
   document.getElementById('result-center').textContent = r.center_perspective || '';
   document.getElementById('result-right').textContent = r.right_perspective || '';
   document.getElementById('result-missing').textContent = r.whats_missing || '';
-
   const globalEl = document.getElementById('result-global');
   globalEl.innerHTML = (r.global_coverage || []).map(g => `<span class="result-global-pill">${g}</span>`).join('');
-
   document.getElementById('result-verdict').textContent = r.verdict || '';
-
   document.getElementById('result-wrap').classList.add('show');
   document.getElementById('screen-analyze').scrollTop = 0;
 }
@@ -1366,13 +1362,11 @@ function renderClaimResult(r) {
   const emojiMap = { true: '✓ VERIFIED TRUE', false: '✗ FALSE', misleading: '⚠ MISLEADING', missing_context: '◎ MISSING CONTEXT' };
   const color = colorMap[r.verdict] || 'gold';
   const label = emojiMap[r.verdict] || r.verdict;
-
   document.getElementById('claim-verdict-label').className = `result-label ${color}`;
   document.getElementById('claim-verdict-label').textContent = label;
   document.getElementById('claim-verdict-headline').textContent = r.headline || '';
   document.getElementById('claim-verdict-explanation').textContent = r.explanation || '';
   document.getElementById('claim-verdict-nuance').textContent = r.nuance ? `Note: ${r.nuance}` : '';
-
   document.getElementById('claim-result-wrap').classList.add('show');
   document.getElementById('screen-analyze').scrollTop = 0;
 }
@@ -1386,7 +1380,6 @@ function resetAnalysis() {
   document.getElementById('analyze-btn').disabled = false;
 }
 
-// ── PROFILE / BIAS AUDIT ──
 function loadBiasAudit() {
   try {
     const u = getUsage();
@@ -1408,7 +1401,6 @@ function loadBiasAudit() {
   } catch(e) {}
 }
 
-// ── STATUS TIME ──
 function updateTime() {
   const now = new Date();
   let h = now.getHours(), m = now.getMinutes();
@@ -1419,10 +1411,7 @@ function updateTime() {
 updateTime();
 setInterval(updateTime, 60000);
 
-// ── INIT ──
-setTimeout(() => {
-  renderCards();
-}, 50);
+setTimeout(() => { renderCards(); }, 50);
 </script>
 </body>
 </html>
