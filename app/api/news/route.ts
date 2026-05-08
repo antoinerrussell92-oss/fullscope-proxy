@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const NEWSAPI_KEY = process.env.NEWSAPI_KEY!;
+const CURRENTS_API_KEY = process.env.CURRENTS_API_KEY!;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -18,25 +18,43 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category') || 'general';
     const query = searchParams.get('q') || '';
 
-    if (!NEWSAPI_KEY) {
-      return NextResponse.json({ error: 'NewsAPI key not configured' }, { status: 500, headers: corsHeaders });
+    if (!CURRENTS_API_KEY) {
+      return NextResponse.json({ error: 'Currents API key not configured' }, { status: 500, headers: corsHeaders });
     }
 
     let url = '';
     if (query) {
-      url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&language=en&sortBy=publishedAt&pageSize=20&apiKey=${NEWSAPI_KEY}`;
+      url = `https://api.currentsapi.services/v1/search?keywords=${encodeURIComponent(query)}&language=en&apiKey=${CURRENTS_API_KEY}`;
     } else {
-      url = `https://newsapi.org/v2/top-headlines?country=us&category=${category}&pageSize=20&apiKey=${NEWSAPI_KEY}`;
+      const categoryMap: Record<string, string> = {
+        general: 'general',
+        business: 'business',
+        technology: 'technology',
+        science: 'science',
+        positive: 'world',
+        global: 'world',
+      };
+      const mappedCategory = categoryMap[category] || 'general';
+      url = `https://api.currentsapi.services/v1/latest-news?category=${mappedCategory}&language=en&apiKey=${CURRENTS_API_KEY}`;
     }
 
     const res = await fetch(url);
     const data = await res.json();
 
     if (!res.ok || data.status === 'error') {
-      return NextResponse.json({ error: data.message || 'NewsAPI error' }, { status: res.status, headers: corsHeaders });
+      return NextResponse.json({ error: data.message || 'Currents API error' }, { status: res.status, headers: corsHeaders });
     }
 
-    return NextResponse.json({ articles: data.articles, totalResults: data.totalResults }, { headers: corsHeaders });
+    const articles = (data.news || []).map((article: any) => ({
+      title: article.title,
+      description: article.description,
+      url: article.url,
+      urlToImage: article.image && article.image !== 'None' ? article.image : null,
+      publishedAt: article.published,
+      source: { name: article.author || 'Unknown' },
+    }));
+
+    return NextResponse.json({ articles, totalResults: articles.length }, { headers: corsHeaders });
 
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500, headers: corsHeaders });
