@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     if (query) {
       url = `https://api.currentsapi.services/v1/search?keywords=${encodeURIComponent(query)}&language=en&apiKey=${CURRENTS_API_KEY}`;
     } else if (category === 'positive') {
-      url = `https://api.currentsapi.services/v1/search?keywords=breakthrough+achievement+success+recovery+innovation+hope&language=en&apiKey=${CURRENTS_API_KEY}`;
+      url = `https://api.currentsapi.services/v1/search?keywords=breakthrough&language=en&apiKey=${CURRENTS_API_KEY}`;
     } else {
       const categoryMap: Record<string, string> = {
         general: 'general',
