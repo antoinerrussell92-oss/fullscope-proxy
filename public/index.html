@@ -189,7 +189,7 @@ html, body { background: #000; overflow: hidden; height: 100%; width: 100%; font
       <div class="tab-item" onclick="setFeedTab(this,'world')">🌍 Global</div>
       <div class="tab-item" onclick="setFeedTab(this,'technology')">🔬 Tech</div>
       <div class="tab-item" onclick="setFeedTab(this,'business')">📈 Business</div>
-      <div class="tab-item" onclick="setFeedTab(this,'science')">🧬 Science</div>
+      <div class="tab-item" onclick="setFeedTab(this,'science')">🧬 Science</div>       <div class="tab-item" onclick="setFeedTab(this,'positive')">✨ Good News</div>
     </div>
     <div class="feed-container" id="feed-container">
       <div class="feed-loading" id="feed-loading">
@@ -198,7 +198,7 @@ html, body { background: #000; overflow: hidden; height: 100%; width: 100%; font
       </div>
       <div class="cards-track" id="cards-track"></div>
     </div>
-    <div class="swipe-dots" id="swipe-dots"></div>
+    <div class="swipe-dots" id="swipe-dots"></div>     <div style="position:absolute;top:44px;right:0;z-index:51;padding:6px 10px;">       <div id="search-toggle" onclick="toggleSearch()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;">🔍</div>     </div>     <div id="search-bar" style="display:none;position:absolute;top:86px;left:0;right:0;z-index:51;padding:0 12px;">       <div style="display:flex;gap:8px;align-items:center;background:rgba(10,22,40,0.95);padding:8px 12px;border-radius:12px;border:0.5px solid rgba(201,168,76,0.2);">         <input id="search-input" type="text" placeholder="Search any topic…" style="flex:1;background:transparent;border:none;outline:none;color:#f0f4fc;font-family:'Source Sans 3',sans-serif;font-size:14px;" onkeydown="if(event.key==='Enter')runSearch()">         <button onclick="runSearch()" style="background:var(--gold);color:#0a1628;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Playfair Display',serif;">Go</button>         <button onclick="toggleSearch()" style="background:transparent;border:none;color:rgba(255,255,255,0.4);font-size:18px;cursor:pointer;padding:0 4px;">×</button>       </div>     </div>
     <div class="swipe-hint">
       <div class="swipe-hint-arrow">↑</div>
       <div class="swipe-hint-text">Swipe</div>
@@ -562,7 +562,7 @@ function analyzeArticle(index) {
 }
 
 function closeDetail() { document.getElementById('detail-overlay').classList.remove('open'); }
-function setFeedTab(el, tab) { document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active')); el.classList.add('active'); currentFeedTab = tab; fetchNews(tab); }
+function toggleSearch() {   const bar = document.getElementById('search-bar');   const input = document.getElementById('search-input');   if (bar.style.display === 'none') {     bar.style.display = 'block';     input.focus();   } else {     bar.style.display = 'none';     input.value = '';   } }  function runSearch() {   const query = document.getElementById('search-input').value.trim();   if (!query) return;   document.getElementById('search-bar').style.display = 'none';   document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));   currentFeedTab = 'search';   document.getElementById('feed-loading').classList.remove('hidden');   document.getElementById('cards-track').innerHTML = '';   document.getElementById('swipe-dots').innerHTML = '';   fetch(`${NEWS_URL}?q=${encodeURIComponent(query)}`)     .then(r => r.json())     .then(data => {       if (data.articles && data.articles.length > 0) {         liveArticles = data.articles.filter(a => a.title && a.description);         currentIndex = 0;         renderLiveCards();       } else { showFeedError(); }     })     .catch(() => showFeedError())     .finally(() => document.getElementById('feed-loading').classList.add('hidden')); }  function setFeedTab(el, tab) { document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active')); el.classList.add('active'); currentFeedTab = tab; fetchNews(tab); }
 function getCardHeight() { const phone = document.getElementById('phone'); return phone ? phone.getBoundingClientRect().height : Math.min(844, window.innerHeight); }
 function updateTrack(animate = true) {
   const track = document.getElementById('cards-track');
