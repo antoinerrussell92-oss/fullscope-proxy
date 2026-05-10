@@ -173,6 +173,56 @@ html, body { background: #000; overflow: hidden; height: 100%; width: 100%; font
 .saved-item-title { font-family: var(--ff); font-size: 14px; font-weight: 700; font-style: italic; color: #fff; margin-bottom: 6px; line-height: 1.3; }
 .saved-item-meta { font-size: 10px; color: var(--text3); }
 .saved-empty { font-size: 13px; color: var(--text3); text-align: center; padding: 20px 0; }
+
+/* ── ONBOARDING ── */
+.ob-overlay{position:absolute;inset:0;background:#0a1628;z-index:1000;display:flex;flex-direction:column;overflow:hidden;}
+.ob-overlay.hidden{display:none;}
+.ob-track{display:flex;width:500%;height:100%;transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);}
+.ob-slide{width:20%;height:100%;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;overflow:hidden;}
+.ob-skip{position:absolute;top:52px;right:18px;font-size:11px;color:rgba(255,255,255,0.15);background:none;border:none;cursor:pointer;z-index:10;font-family:var(--fb);}
+.ob-logo{font-family:var(--ff);font-size:16px;font-weight:900;font-style:italic;color:#fff;margin-bottom:18px;text-align:center;}
+.ob-logo span{color:var(--gold);}
+.ob-icon{width:72px;height:72px;border-radius:20px;border:0.5px solid rgba(201,168,76,0.25);background:rgba(201,168,76,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:30px;}
+.ob-title{font-family:var(--ff);font-size:21px;font-weight:800;font-style:italic;color:#fff;text-align:center;line-height:1.2;margin-bottom:10px;}
+.ob-body{font-size:12px;color:rgba(143,163,200,0.9);text-align:center;line-height:1.6;}
+.ob-mock{background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px;width:100%;margin:12px 0 6px;}
+.ob-row{display:flex;justify-content:space-between;margin-bottom:7px;}
+.ob-row:last-child{margin-bottom:0;}
+.ob-ml{font-size:10px;color:rgba(74,95,138,1);}
+.ob-mv{font-size:10px;font-weight:600;}
+.ob-persps{display:flex;flex-direction:column;gap:5px;margin:10px 0 6px;width:100%;}
+.ob-persp{border-radius:7px;padding:7px 10px;border:0.5px solid;}
+.ob-persp.left{background:rgba(107,159,255,0.06);border-color:rgba(107,159,255,0.2);}
+.ob-persp.cent{background:rgba(201,168,76,0.06);border-color:rgba(201,168,76,0.15);}
+.ob-persp.right{background:rgba(244,132,95,0.06);border-color:rgba(244,132,95,0.2);}
+.ob-pl{font-size:9px;font-weight:700;letter-spacing:0.5px;margin-bottom:2px;}
+.ob-persp.left .ob-pl{color:var(--left);}
+.ob-persp.cent .ob-pl{color:var(--gold);}
+.ob-persp.right .ob-pl{color:var(--right);}
+.ob-pt{font-size:10px;color:rgba(240,244,252,0.7);line-height:1.4;}
+.ob-dots{position:absolute;bottom:108px;left:50%;transform:translateX(-50%);display:flex;gap:6px;}
+.ob-dot{width:6px;height:6px;border-radius:3px;background:#1c2d5a;transition:all 0.3s;}
+.ob-dot.active{width:18px;background:var(--gold);}
+.ob-next{position:absolute;bottom:44px;left:24px;right:24px;background:var(--gold);color:#0a1628;font-family:var(--ff);font-size:14px;font-weight:800;padding:14px;border-radius:12px;border:none;cursor:pointer;}
+.ob-paywall{width:20%;height:100%;flex-shrink:0;display:flex;flex-direction:column;padding:22px 18px 16px;background:#0a1628;overflow-y:auto;}
+.ob-pw-logo{font-family:var(--ff);font-size:15px;font-weight:900;font-style:italic;color:#fff;margin-bottom:12px;}
+.ob-pw-logo span{color:var(--gold);}
+.ob-pw-title{font-family:var(--ff);font-size:19px;font-weight:800;font-style:italic;color:#fff;line-height:1.2;margin-bottom:6px;}
+.ob-pw-sub{font-size:11px;color:rgba(143,163,200,0.8);margin-bottom:14px;line-height:1.5;}
+.ob-free{background:rgba(201,168,76,0.07);border:0.5px solid rgba(201,168,76,0.2);border-radius:10px;padding:10px 12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+.ob-free-label{font-size:10px;color:rgba(143,163,200,0.6);font-weight:700;letter-spacing:0.5px;}
+.ob-free-val{font-size:13px;font-weight:800;color:var(--gold);}
+.ob-plan{border:0.5px solid rgba(255,255,255,0.07);border-radius:12px;padding:12px 14px;margin-bottom:8px;}
+.ob-plan.feat{border-color:rgba(201,168,76,0.35);background:rgba(201,168,76,0.04);}
+.ob-plan-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.ob-plan-name{font-size:10px;font-weight:700;color:rgba(143,163,200,0.5);letter-spacing:1px;}
+.ob-plan-badge{background:rgba(201,168,76,0.12);border:0.5px solid rgba(201,168,76,0.25);border-radius:20px;padding:2px 7px;font-size:9px;color:var(--gold);font-weight:600;}
+.ob-plan-price{font-family:var(--ff);font-size:24px;font-weight:800;color:#fff;}
+.ob-plan-per{font-family:var(--fb);font-size:11px;font-weight:400;color:rgba(143,163,200,0.5);}
+.ob-plan-save{font-size:10px;color:var(--positive);margin-top:2px;}
+.ob-start{width:100%;background:var(--gold);color:#0a1628;font-family:var(--ff);font-size:13px;font-weight:800;padding:13px;border-radius:12px;border:none;cursor:pointer;margin-bottom:8px;}
+.ob-signin{text-align:center;font-size:10px;color:rgba(201,168,76,0.4);width:100%;background:none;border:none;cursor:pointer;margin-bottom:8px;}
+.ob-trial{background:rgba(82,208,138,0.05);border:0.5px solid rgba(82,208,138,0.15);border-radius:10px;padding:10px 12px;font-size:10px;color:rgba(143,163,200,0.6);line-height:1.5;text-align:center;}
 </style>
 </head>
 <body>
@@ -182,6 +232,82 @@ html, body { background: #000; overflow: hidden; height: 100%; width: 100%; font
     <span class="status-icons">●●● 📶 🔋</span>
   </div>
 
+  <!-- ═══ ONBOARDING OVERLAY ═══ -->
+  <div class="ob-overlay" id="ob-overlay">
+    <button class="ob-skip" onclick="obSkip()">Skip</button>
+    <div class="ob-track" id="ob-track">
+      <div class="ob-slide">
+        <div class="ob-logo">Full<span>Scope</span></div>
+        <div class="ob-icon">📰</div>
+        <div class="ob-title">The news isn't <span style="color:var(--gold)">lying to you.</span> But it isn't telling you everything.</div>
+        <div class="ob-body">Every outlet has an angle. FullScope shows you all of them — left, center, right, and what the rest of the world is saying.</div>
+      </div>
+      <div class="ob-slide">
+        <div class="ob-logo">Full<span>Scope</span></div>
+        <div class="ob-icon">🔍</div>
+        <div class="ob-title">AI analysis on <span style="color:var(--gold)">any article,</span> video, or claim.</div>
+        <div class="ob-mock">
+          <div class="ob-row"><span class="ob-ml">Bias rating</span><span class="ob-mv" style="color:var(--left)">Left-leaning · 62</span></div>
+          <div class="ob-row"><span class="ob-ml">What's missing</span><span class="ob-mv" style="color:var(--amber)">Economic context</span></div>
+          <div class="ob-row"><span class="ob-ml">Viral risk</span><span class="ob-mv" style="color:var(--red)">High</span></div>
+          <div class="ob-row"><span class="ob-ml">Global coverage</span><span class="ob-mv" style="color:var(--positive)">3 angles</span></div>
+        </div>
+        <div class="ob-body">Paste any article or URL. Claude reads it and gives you a full breakdown in seconds.</div>
+      </div>
+      <div class="ob-slide">
+        <div class="ob-logo">Full<span>Scope</span></div>
+        <div class="ob-icon">⚖️</div>
+        <div class="ob-title">See <span style="color:var(--gold)">every side</span> of every story.</div>
+        <div class="ob-persps">
+          <div class="ob-persp left"><div class="ob-pl">LEFT VIEW</div><div class="ob-pt">Focuses on systemic inequality and policy failure.</div></div>
+          <div class="ob-persp cent"><div class="ob-pl">CENTER / FACTUAL</div><div class="ob-pt">Reports the verified data without editorial framing.</div></div>
+          <div class="ob-persp right"><div class="ob-pl">RIGHT VIEW</div><div class="ob-pt">Emphasizes individual responsibility and market forces.</div></div>
+        </div>
+        <div class="ob-body">No echo chambers. Every analysis shows all three perspectives plus global angles.</div>
+      </div>
+      <div class="ob-slide">
+        <div class="ob-logo">Full<span>Scope</span></div>
+        <div class="ob-icon">📊</div>
+        <div class="ob-title">Your personal <span style="color:var(--gold)">bias audit.</span></div>
+        <div class="ob-mock">
+          <div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span class="ob-ml">Left-leaning</span><span class="ob-mv" style="color:var(--left)">42%</span></div><div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px;"><div style="width:42%;height:4px;background:var(--left);border-radius:2px;"></div></div></div>
+          <div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span class="ob-ml">Center</span><span class="ob-mv" style="color:var(--gold)">35%</span></div><div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px;"><div style="width:35%;height:4px;background:var(--gold);border-radius:2px;"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span class="ob-ml">Right-leaning</span><span class="ob-mv" style="color:var(--right)">23%</span></div><div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px;"><div style="width:23%;height:4px;background:var(--right);border-radius:2px;"></div></div></div>
+        </div>
+        <div class="ob-body">Every article you analyze builds your personal bias audit — the most honest mirror in any news app.</div>
+      </div>
+      <div class="ob-paywall">
+        <div class="ob-pw-logo">Full<span>Scope</span></div>
+        <div class="ob-pw-title">See the full story. Every time.</div>
+        <div class="ob-pw-sub">Start free. Upgrade when you're ready.</div>
+        <div class="ob-free">
+          <span class="ob-free-label">FREE FOREVER</span>
+          <span class="ob-free-val">5 analyses/month</span>
+        </div>
+        <div class="ob-plan feat">
+          <div class="ob-plan-top"><span class="ob-plan-name">PLUS</span><span class="ob-plan-badge">Most Popular</span></div>
+          <div class="ob-plan-price">$7 <span class="ob-plan-per">/ month</span></div>
+          <div class="ob-plan-save">or $60/year — save $24 · 30 days free for early members</div>
+        </div>
+        <div class="ob-plan">
+          <div class="ob-plan-top"><span class="ob-plan-name">PRO</span></div>
+          <div class="ob-plan-price">$14 <span class="ob-plan-per">/ month</span></div>
+          <div class="ob-plan-save">or $110/year — save $58 · for journalists &amp; researchers</div>
+        </div>
+        <button class="ob-start" onclick="obDismiss()">Start Free — No Card Needed</button>
+        <button class="ob-signin" onclick="obDismiss();openAuthModal()">Already a member? Sign in</button>
+        <div class="ob-trial">✦ Early waitlist members get 30 days of Plus free.</div>
+      </div>
+    </div>
+    <div class="ob-dots" id="ob-dots">
+      <div class="ob-dot active" id="ob-d0"></div>
+      <div class="ob-dot" id="ob-d1"></div>
+      <div class="ob-dot" id="ob-d2"></div>
+      <div class="ob-dot" id="ob-d3"></div>
+    </div>
+    <button class="ob-next" id="ob-next" onclick="obNext()">Get Started</button>
+  </div>
+
   <!-- FEED -->
   <div class="screen feed-screen active" id="screen-feed">
     <div class="tab-bar">
@@ -189,7 +315,8 @@ html, body { background: #000; overflow: hidden; height: 100%; width: 100%; font
       <div class="tab-item" onclick="setFeedTab(this,'world')">🌍 Global</div>
       <div class="tab-item" onclick="setFeedTab(this,'technology')">🔬 Tech</div>
       <div class="tab-item" onclick="setFeedTab(this,'business')">📈 Business</div>
-      <div class="tab-item" onclick="setFeedTab(this,'science')">🧬 Science</div>       <div class="tab-item" onclick="setFeedTab(this,'positive')">✨ Good News</div>
+      <div class="tab-item" onclick="setFeedTab(this,'science')">🧬 Science</div>
+      <div class="tab-item" onclick="setFeedTab(this,'positive')">✨ Good News</div>
     </div>
     <div class="feed-container" id="feed-container">
       <div class="feed-loading" id="feed-loading">
@@ -198,7 +325,17 @@ html, body { background: #000; overflow: hidden; height: 100%; width: 100%; font
       </div>
       <div class="cards-track" id="cards-track"></div>
     </div>
-    <div class="swipe-dots" id="swipe-dots"></div>     <div style="position:absolute;top:44px;right:0;z-index:51;padding:6px 10px;">       <div id="search-toggle" onclick="toggleSearch()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;">🔍</div>     </div>     <div id="search-bar" style="display:none;position:absolute;top:86px;left:0;right:0;z-index:51;padding:0 12px;">       <div style="display:flex;gap:8px;align-items:center;background:rgba(10,22,40,0.95);padding:8px 12px;border-radius:12px;border:0.5px solid rgba(201,168,76,0.2);">         <input id="search-input" type="text" placeholder="Search any topic…" style="flex:1;background:transparent;border:none;outline:none;color:#f0f4fc;font-family:'Source Sans 3',sans-serif;font-size:14px;" onkeydown="if(event.key==='Enter')runSearch()">         <button onclick="runSearch()" style="background:var(--gold);color:#0a1628;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Playfair Display',serif;">Go</button>         <button onclick="toggleSearch()" style="background:transparent;border:none;color:rgba(255,255,255,0.4);font-size:18px;cursor:pointer;padding:0 4px;">×</button>       </div>     </div>
+    <div class="swipe-dots" id="swipe-dots"></div>
+    <div style="position:absolute;top:44px;right:0;z-index:51;padding:6px 10px;">
+      <div id="search-toggle" onclick="toggleSearch()" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;">🔍</div>
+    </div>
+    <div id="search-bar" style="display:none;position:absolute;top:86px;left:0;right:0;z-index:51;padding:0 12px;">
+      <div style="display:flex;gap:8px;align-items:center;background:rgba(10,22,40,0.95);padding:8px 12px;border-radius:12px;border:0.5px solid rgba(201,168,76,0.2);">
+        <input id="search-input" type="text" placeholder="Search any topic…" style="flex:1;background:transparent;border:none;outline:none;color:#f0f4fc;font-family:'Source Sans 3',sans-serif;font-size:14px;" onkeydown="if(event.key==='Enter')runSearch()">
+        <button onclick="runSearch()" style="background:var(--gold);color:#0a1628;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Playfair Display',serif;">Go</button>
+        <button onclick="toggleSearch()" style="background:transparent;border:none;color:rgba(255,255,255,0.4);font-size:18px;cursor:pointer;padding:0 4px;">×</button>
+      </div>
+    </div>
     <div class="swipe-hint">
       <div class="swipe-hint-arrow">↑</div>
       <div class="swipe-hint-text">Swipe</div>
@@ -299,7 +436,7 @@ html, body { background: #000; overflow: hidden; height: 100%; width: 100%; font
         <button class="profile-btn-gold">Upgrade to Plus ✦</button>
         <button class="profile-btn-muted" onclick="showScreen('analyze')">Go to Analyzer →</button>
         <button class="profile-btn-muted" onclick="showScreen('feed')">Back to Feed →</button>
-        <button class="profile-btn-muted" onclick="signOut()">Sign Out</button>
+        <button class="profile-btn-muted" style="color:#f65b5b;border-color:rgba(246,91,91,0.2);background:rgba(246,91,91,0.06);" onclick="signOut()">Sign Out</button>
       </div>
     </div>
   </div>
@@ -376,6 +513,38 @@ let lastAnalysis = null;
 let lastAnalysisTitle = '';
 let lastAnalysisUrl = '';
 let startY = 0, currentY = 0, isDragging = false, mouseDown = false;
+
+// ── ONBOARDING ──
+(function(){
+  if(localStorage.getItem('fs_onboarded')==='1'){
+    document.getElementById('ob-overlay').classList.add('hidden');
+    return;
+  }
+  var cur=0, total=4;
+  window.obNext=function(){
+    if(cur<total-1){cur++;obUpdate();}else obGoPaywall();
+  };
+  window.obSkip=function(){ obGoPaywall(); };
+  window.obGoPaywall=function(){
+    cur=total;
+    document.getElementById('ob-track').style.transform='translateX(-80%)';
+    document.getElementById('ob-dots').style.display='none';
+    document.getElementById('ob-next').style.display='none';
+    document.querySelector('.ob-skip').style.display='none';
+  };
+  window.obDismiss=function(){
+    localStorage.setItem('fs_onboarded','1');
+    document.getElementById('ob-overlay').classList.add('hidden');
+  };
+  function obUpdate(){
+    document.getElementById('ob-track').style.transform='translateX(-'+(cur*20)+'%)';
+    for(var i=0;i<total;i++){
+      document.getElementById('ob-d'+i).className='ob-dot'+(i===cur?' active':'');
+    }
+    var btn=document.getElementById('ob-next');
+    btn.textContent=cur===total-1?'See Plans →':cur===0?'Get Started':'Next';
+  }
+})();
 
 // ── AUTH ──
 function openAuthModal() { authMode = 'login'; setAuthMode('login'); document.getElementById('auth-modal-bg').classList.add('open'); }
@@ -562,7 +731,37 @@ function analyzeArticle(index) {
 }
 
 function closeDetail() { document.getElementById('detail-overlay').classList.remove('open'); }
-function toggleSearch() {   const bar = document.getElementById('search-bar');   const input = document.getElementById('search-input');   if (bar.style.display === 'none') {     bar.style.display = 'block';     input.focus();   } else {     bar.style.display = 'none';     input.value = '';   } }  function runSearch() {   const query = document.getElementById('search-input').value.trim();   if (!query) return;   document.getElementById('search-bar').style.display = 'none';   document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));   currentFeedTab = 'search';   document.getElementById('feed-loading').classList.remove('hidden');   document.getElementById('cards-track').innerHTML = '';   document.getElementById('swipe-dots').innerHTML = '';   fetch(`${NEWS_URL}?q=${encodeURIComponent(query)}`)     .then(r => r.json())     .then(data => {       if (data.articles && data.articles.length > 0) {         liveArticles = data.articles.filter(a => a.title && a.description);         currentIndex = 0;         renderLiveCards();       } else { showFeedError(); }     })     .catch(() => showFeedError())     .finally(() => document.getElementById('feed-loading').classList.add('hidden')); }  function setFeedTab(el, tab) { document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active')); el.classList.add('active'); currentFeedTab = tab; fetchNews(tab); }
+
+function toggleSearch() {
+  const bar = document.getElementById('search-bar');
+  const input = document.getElementById('search-input');
+  if (bar.style.display === 'none') { bar.style.display = 'block'; input.focus(); }
+  else { bar.style.display = 'none'; input.value = ''; }
+}
+
+function runSearch() {
+  const query = document.getElementById('search-input').value.trim();
+  if (!query) return;
+  document.getElementById('search-bar').style.display = 'none';
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  currentFeedTab = 'search';
+  document.getElementById('feed-loading').classList.remove('hidden');
+  document.getElementById('cards-track').innerHTML = '';
+  document.getElementById('swipe-dots').innerHTML = '';
+  fetch(`${NEWS_URL}?q=${encodeURIComponent(query)}`)
+    .then(r => r.json())
+    .then(data => {
+      if (data.articles && data.articles.length > 0) {
+        liveArticles = data.articles.filter(a => a.title && a.description);
+        currentIndex = 0;
+        renderLiveCards();
+      } else { showFeedError(); }
+    })
+    .catch(() => showFeedError())
+    .finally(() => document.getElementById('feed-loading').classList.add('hidden'));
+}
+
+function setFeedTab(el, tab) { document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active')); el.classList.add('active'); currentFeedTab = tab; fetchNews(tab); }
 function getCardHeight() { const phone = document.getElementById('phone'); return phone ? phone.getBoundingClientRect().height : Math.min(844, window.innerHeight); }
 function updateTrack(animate = true) {
   const track = document.getElementById('cards-track');
@@ -754,10 +953,7 @@ async function saveCurrentAnalysis() {
     const body = { article_title: title, article_url: lastAnalysisUrl || null, analysis: lastAnalysis };
     const res = await fetch(SAVE_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + authSession.access_token
-      },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authSession.access_token },
       body: JSON.stringify(body)
     });
     let responseData = {};
@@ -794,9 +990,7 @@ async function loadSavedAnalyses() {
   const listEl = document.getElementById('saved-analyses-list');
   listEl.innerHTML = '<div class="saved-empty">Loading…</div>';
   try {
-    const res = await fetch(GET_URL, {
-      headers: { 'Authorization': 'Bearer ' + authSession.access_token }
-    });
+    const res = await fetch(GET_URL, { headers: { 'Authorization': 'Bearer ' + authSession.access_token } });
     const data = await res.json();
     if (!res.ok || !data.analyses || data.analyses.length === 0) {
       listEl.innerHTML = '<div class="saved-empty">No saved analyses yet.</div>';
