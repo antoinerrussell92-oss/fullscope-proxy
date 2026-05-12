@@ -882,7 +882,7 @@ async function runAnalysis() {
     let systemPrompt, maxTokens;
     if (currentMode === 'claim') {
       systemPrompt = `You are FullScope's fact-checking engine. Analyze any claim and respond ONLY with valid JSON, no markdown, no preamble.\n\nReturn exactly:\n{\n  "verdict": "true|false|misleading|missing_context",\n  "headline": "max 8 words",\n  "explanation": "2-3 sentences plain language",\n  "sources": ["source 1", "source 2"],\n  "nuance": "one sentence on complexity"\n}`;
-      maxTokens = 400;
+      maxTokens = 800;
     } else {
       systemPrompt = `You are FullScope's media analysis engine. Analyze news articles and videos. Respond ONLY with valid JSON, no markdown, no preamble.\n\nReturn exactly:\n{\n  "title": "clean headline",\n  "summary": "2-3 sentence factual summary",\n  "bias_lean": "left|center|right|unclear",\n  "bias_score": 0-100,\n  "bias_explanation": "1-2 sentences",\n  "key_claims": ["claim 1", "claim 2", "claim 3"],\n  "left_perspective": "left framing in 1-2 sentences",\n  "center_perspective": "factual view in 1-2 sentences",\n  "right_perspective": "right framing in 1-2 sentences",\n  "whats_missing": "important context absent from coverage",\n  "global_coverage": ["angle 1", "angle 2", "angle 3"],\n  "verdict": "bottom line FullScope verdict in 1-2 sentences"\n}`;
       maxTokens = 1200;
