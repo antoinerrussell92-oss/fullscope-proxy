@@ -503,6 +503,8 @@ const NEWS_URL   = 'https://fullscope-proxy.vercel.app/api/news';
 const SAVE_URL   = 'https://fullscope-proxy.vercel.app/api/save-analysis';
 const GET_URL    = 'https://fullscope-proxy.vercel.app/api/get-analyses';
 const FREE_LIMIT = 5;
+const SUPABASE_URL = 'https://jwtazacuyzkulrpssqwe.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp3dGF6YWN1eXprdWxycHNzcXdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyMDM0NjMsImV4cCI6MjA5Mzc3OTQ2M30.Lh-MxNB3_JTsAOkW4LiUDe_Ls53-STO23R4QWwdaRAQ';  
 const FREE_CLAIM_USED_KEY = 'fs_free_claim_used';
 let authSession = null;
 let authMode = 'login';
@@ -1044,7 +1046,33 @@ function updateTime() {
 }
 updateTime();
 setInterval(updateTime, 60000);
-setTimeout(() => { fetchNews('general'); }, 50);
+
+async function checkKillSwitch() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/app_config?key=eq.is_live&select=value`, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+      }
+    });
+    const data = await res.json();
+    if (data && data.length > 0 && data[0].value === 'false') {
+      document.getElementById('ob-overlay').classList.add('hidden');
+      document.getElementById('phone').innerHTML = `
+        <div style="position:absolute;inset:0;background:#0a1628;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:900;font-style:italic;color:#fff;margin-bottom:16px;">Full<span style="color:#c9a84c;">Scope</span></div>
+          <div style="font-size:32px;margin-bottom:20px;">🔧</div>
+          <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:12px;">Down for Maintenance</div>
+          <div style="font-size:13px;color:#8fa3c8;line-height:1.6;">We're making improvements. Check back shortly.</div>
+        </div>`;
+    } else {
+      setTimeout(() => { fetchNews('general'); }, 50);
+    }
+  } catch(e) {
+    setTimeout(() => { fetchNews('general'); }, 50);
+  }
+}
+checkKillSwitch();
 </script>
 </body>
 </html>
