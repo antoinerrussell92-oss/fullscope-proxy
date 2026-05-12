@@ -503,7 +503,7 @@ const NEWS_URL   = 'https://fullscope-proxy.vercel.app/api/news';
 const SAVE_URL   = 'https://fullscope-proxy.vercel.app/api/save-analysis';
 const GET_URL    = 'https://fullscope-proxy.vercel.app/api/get-analyses';
 const FREE_LIMIT = 5;
-
+const FREE_CLAIM_USED_KEY = 'fs_free_claim_used';
 let authSession = null;
 let authMode = 'login';
 let currentFeedTab = 'general';
@@ -857,7 +857,20 @@ function trackBias(lean) {
 async function runAnalysis() {
   const text = document.getElementById('analyze-textarea').value.trim();
   if (!text) return;
-  if (getUsage().count >= FREE_LIMIT) { showError('You have reached your monthly limit. Upgrade to Plus for unlimited.'); return; }
+  const usageCount = getUsage().count;
+  const isOverLimit = usageCount >= FREE_LIMIT;
+  const isClaim = currentMode === 'claim';
+  const freeClaimMonth = localStorage.getItem(FREE_CLAIM_USED_KEY);
+  const thisMonth = `${new Date().getFullYear()}-${new Date().getMonth()}`;
+  const freeClaimAvailable = isClaim && freeClaimMonth !== thisMonth;
+  if (isOverLimit && !freeClaimAvailable) {
+    if (isClaim && freeClaimMonth === thisMonth) {
+      showError('You have used your free monthly claim check. Upgrade to Plus for unlimited fact-checking.');
+    } else {
+      showError('You have reached your monthly limit. Upgrade to Plus for unlimited analyses.');
+    }
+    return;
+  }
   document.getElementById('analyze-btn').disabled = true;
   document.getElementById('analyze-loading').classList.add('show');
   document.getElementById('analyze-error').classList.remove('show');
@@ -877,7 +890,7 @@ async function runAnalysis() {
     const response = await fetch(PROXY_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ text: (currentMode === 'claim' ? 'Fact-check this claim: ' : 'Analyze this content: ') + text, system: systemPrompt, max_tokens: maxTokens }) });
     if (!response.ok) { const err = await response.json().catch(() => ({})); throw new Error(err?.error || `Request failed (${response.status})`); }
     const r = await response.json();
-    incrementUsage();
+    if (isOverLimit && freeClaimAvailable) {       localStorage.setItem(FREE_CLAIM_USED_KEY, thisMonth);     } else {       incrementUsage();     }
     if (currentMode === 'claim') {
       renderClaimResult(r);
     } else {
