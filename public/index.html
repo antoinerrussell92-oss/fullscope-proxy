@@ -701,6 +701,8 @@ footer {
   .footer-inner { flex-direction: column; gap: 24px; }
   .waitlist-card { padding: 32px 24px; }
 }
+#beehiiv-form-wrapper { width: 100%; }
+#beehiiv-form-wrapper iframe { width: 100% !important; min-width: 100% !important; }
 </style>
 </head>
 <body>
@@ -980,7 +982,7 @@ footer {
     </div>
     <div class="waitlist-card reveal">
       <div class="waitlist-perk">✦ Early waitlist members get 30 days of Plus free when we launch on the App Store.</div>
-      <div id="beehiiv-form-wrapper">
+      <div id="beehiiv-form-wrapper" style="width:100%;max-width:100%;overflow:hidden;">
         <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="71830a54-5724-4ab8-8904-ac0cf85bb832"></script>
       </div>
     </div>
