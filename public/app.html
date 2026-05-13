@@ -433,7 +433,7 @@ html, body { background: #000; overflow: hidden; height: 100%; width: 100%; font
         <div id="saved-analyses-list"><div class="saved-empty">No saved analyses yet.</div></div>
       </div>
       <div class="profile-actions" style="margin-top:24px;">
-        <button class="profile-btn-gold">Upgrade to Plus ✦</button>
+        <button class="profile-btn-gold" onclick="startUpgrade('plus_monthly')">Upgrade to Plus ✦</button>
         <button class="profile-btn-muted" onclick="showScreen('analyze')">Go to Analyzer →</button>
         <button class="profile-btn-muted" onclick="showScreen('feed')">Back to Feed →</button>
         <button class="profile-btn-muted" style="color:#f65b5b;border-color:rgba(246,91,91,0.2);background:rgba(246,91,91,0.06);" onclick="signOut()">Sign Out</button>
@@ -602,7 +602,32 @@ function updateProfileUI() {
   }
 }
 function signOut() { authSession = null; document.getElementById('profile-name').textContent = 'FullScope Member'; document.getElementById('profile-plan').textContent = 'Free Plan'; showScreen('feed'); }
-
+async function startUpgrade(plan) {
+  if (!authSession) { openAuthModal(); return; }
+  const btn = event.target;
+  const orig = btn.textContent;
+  btn.textContent = 'Loading…';
+  btn.disabled = true;
+  try {
+    const res = await fetch('https://fullscope-proxy.vercel.app/api/stripe-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan, user_email: authSession.user.email })
+    });
+    const data = await res.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert('Something went wrong. Please try again.');
+      btn.textContent = orig;
+      btn.disabled = false;
+    }
+  } catch(e) {
+    alert('Network error. Please try again.');
+    btn.textContent = orig;
+    btn.disabled = false;
+  }
+}
 // ── NAVIGATION ──
 function showScreen(name) {
   if (name === 'profile' && !authSession) { openAuthModal(); return; }
